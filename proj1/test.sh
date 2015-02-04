@@ -8,6 +8,10 @@ fi
 BIN=$1
 DIR=$2
 
+if [ ! -d "$DIR" ] ; then
+  mkdir "$DIR"
+fi
+
 total=0
 success=0
 for f in ./tests/*.py; do
