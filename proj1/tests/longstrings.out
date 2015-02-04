@@ -1,0 +1,7 @@
+(LIT "long string one")
+(NEWLINE)
+(ID "a")
+(NEWLINE)
+(LIT "long string two")
+(NEWLINE)
+(ENDMARKER)
