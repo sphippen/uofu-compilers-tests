@@ -3,14 +3,20 @@ Project 1 Tests
 
 #### Test Script Usage
 
-The provided shell script runs all the tests against a provided binary.
+One of the provided shell scripts runs all the tests against a provided binary.
 Run it like
 
-```$ test.sh <pathtopylex> <outdiffdir>```
+```$ all-tests.sh <pathtopylex> <outdiffdir>```
 
 The ```<outdiffdir>``` parameter is a directory where the program's output is written, along with diffs between the expected and actual output.
 
 Error test cases are checked via the return code of the ```<pathtopylex>``` program - any return other than ```0``` indicates an error.
+
+If you want to run an individual test, you can use ```test.sh```. Run it like
+
+```$ test.sh <pathtopylex> <outdiffdir> <pathtotestfile>```
+
+The ```<pathtotestfile>``` parameter can be a path to a test file - if a file is not found with that name, the script will look for the file ```./tests/<pathtotestfile>```.
 
 #### Test Cases
 

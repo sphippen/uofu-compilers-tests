@@ -1,43 +1,50 @@
 #!/bin/sh
 
-if [ $# -ne 2 ] ; then
-  printf -- "Usage: $0 <binary> <outdatadirectory>\nOutput data is written to <outdatadirectory>.\n"
+if [ $# -ne 3 ] ; then
+  printf -- "Usage: $0 <binary> <outdatadirectory> <testfile>\nOutput data is written to <outdatadirectory>.\n"
   exit 1
 fi
 
 BIN=$1
 DIR=$2
+TESTFILE=$3
+
+if [ ! -f "$TESTFILE" ] ; then
+  checkintests="./tests/$TESTFILE"
+  if [ ! -f "$checkintests" ] ; then
+    printf -- "\n%s: FAILED (couldn't find input file)\n" "$TESTFILE"
+    exit 1
+  else
+    TESTFILE="$checkintests"
+  fi
+fi
 
 if [ ! -d "$DIR" ] ; then
   mkdir "$DIR"
 fi
 
-total=0
-success=0
-for f in ./tests/*.py; do
-  total="$(echo "$total+1" | bc)"
-  expectedout="${f%.py}.out"
-  base="$(basename -- "$f")"
-  if [ -f "$expectedout" ] ; then
-    outfile="./$DIR/${base%.py}.out"
-    "$BIN" "$f" > "$outfile"
-    diffout="${outfile%.out}.diff"
-    diff -- "$outfile" "$expectedout" > "$diffout"
-    if [ $? -ne 0 ] ; then
-      printf -- "\n%s: FAILED (diff shown below):\n" "$base"
-      cat -- "$diffout"
-    else
-      printf -- "\n%s: PASSED\n" "$base"
-      success="$(echo "$success+1" | bc)"
-    fi
+expectedout="${TESTFILE%.py}.out"
+base="$(basename -- "$TESTFILE")"
+if [ -f "$expectedout" ] ; then
+  outfile="./$DIR/${base%.py}.out"
+  "$BIN" "$TESTFILE" > "$outfile"
+  diffout="${outfile%.out}.diff"
+  diff -- "$outfile" "$expectedout" > "$diffout"
+  if [ $? -ne 0 ] ; then
+    printf -- "\n%s: FAILED (diff shown below):\n" "$base"
+    cat -- "$diffout"
+    exit 1
   else
-    "$BIN" "$f" > /dev/null
-    if [ $? -eq 0 ] ; then
-      printf -- "\n%s: FAILED (should have errored)\n" "$base"
-    else
-      printf -- "\n%s: PASSED\n" "$base"
-      success="$(echo "$success+1" | bc)"
-    fi
+    printf -- "\n%s: PASSED\n" "$base"
+    exit 0
   fi
-done
-printf -- "\n%s/%s TESTS PASSED\n" "$success" "$total"
+else
+  "$BIN" "$TESTFILE" > /dev/null
+  if [ $? -eq 0 ] ; then
+    printf -- "\n%s: FAILED (should have errored)\n" "$base"
+    exit 1
+  else
+    printf -- "\n%s: PASSED\n" "$base"
+    exit 0
+  fi
+fi
