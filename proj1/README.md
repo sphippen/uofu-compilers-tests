@@ -1,27 +1,51 @@
 Project 1 Tests
 ===============
 
-#### Test Script Usage
+## Usage
 
 One of the provided shell scripts runs all the tests against a provided binary.
-Run it like
+Run it as follows 
 
-```$ all-tests.sh <pathtopylex> <outdiffdir>```
+    $ ./test-cases <path-to-pylex> <test-dir>
 
-The ```<outdiffdir>``` parameter is a directory where the program's output is written, along with diffs between the expected and actual output.
+The `test-cases` program loads all test cases from the given `<test-dir>` an
+evaluates each against the pylex binary located at `<path-to-pylex>`. If
+any test case fails, test-cases will exit with a non-zero status code, and
+a failure message will be printed that specifies which test-case failed.
 
-Error test cases are checked via the return code of the ```<pathtopylex>``` program - any return other than ```0``` indicates an error.
+For example, if you had copied your pylex binary into this directory, and you
+wanted to run our tests against it you could do so using this command:
 
-If you want to run an individual test, you can use ```test.sh```. Run it like
+    $ ./test-cases ./pylex ./tests
 
-```$ test.sh <pathtopylex> <outdiffdir> <pathtotestfile>```
+If you have tests that are not in this repository, you can supply any directory
+with tests following the convention described below. If you come up with any
+additional test cases, we'd love to add them to this repository so other
+can test against them as well. You can add tests to this repo the "github way"
+by [submitting a pull request][pull-request] (which is the easiest way for us), 
+or you can just email your test cases to Josh at `josh@kunz.xyz`. 
+We'll also be watching the mailing list for any test cases we can add.
 
-The ```<pathtotestfile>``` parameter can be a path to a test file - if a file is not found with that name, the script will look for the file ```./tests/<pathtotestfile>```.
+### Test Case Format
 
-#### Test Cases
+Test cases are specified using a test directory. There are two types of tests,
+positive tests that we think pylex should lex correctly, negative tests that we 
+expect pylex should fail to lex, and generate an error. 
 
-Now accepting test cases via pull request.
+Positive cases are
+specified by two files, a `.py` file, and a `.out` file. The `.py` file is
+the input to the lexer, and the `.out` file is what we expect pylex should 
+produce when given the `.py` file of the same name as input. If the output
+pylex produces when given a file `<test-name>.py` does not byte-for-byte match
+the contents of the file `<test-name>.out`, we report that pylex has failed the
+test.
 
-Test cases go in the ```tests``` folder.
+If we expect that pylex shouldn't be able to lex a particular `.py` file, we
+don't supply a `.out` file that matches the `.py` file. This tells the test-runner
+that pylex should incited exit with a non-zero status indicating failure.
 
-Each test input must have a ```.py``` extension. If a test input file is supposed to be valid input, there should be a matching ```.out``` file containing the appropriate ```pylex``` output. The ```test.sh``` script assumes that any file without a matching ```.out``` file is supposed to generate an error.
+Additional test cases can be added by putting files in the `./tests` directory
+following the above convention. If the convention is still a little confusing
+the `./tests` directory already has a number of test cases.
+
+  [pull-request]: https://help.github.com/articles/creating-a-pull-request/

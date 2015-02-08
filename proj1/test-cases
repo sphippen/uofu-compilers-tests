@@ -1,0 +1,91 @@
+#! /usr/bin/env racket
+#lang racket
+
+(require racket/cmdline)
+(require "lib/proc.rkt")
+(require "lib/common.rkt")
+(require "lib/term-colors.rkt")
+
+(define (file-split f)
+ (let* ([file (file-name-from-path f)]
+        [ext  (bytes->string/utf-8 (filename-extension file))])
+  (let* ([file-string (path->string file)]
+         [file-len    (string-length file-string)])
+   (list (substring file-string 
+                    0 (- file-len (+ 1 (string-length ext))))
+         ext))))
+
+(define (path/py? f)
+ (match-let ([(list file-name ext) 
+              (file-split f)])
+  (string=? "py" ext)))
+
+(define (name-for-test-file f)
+ (car (file-split f)))
+
+(define (test-for-name dir name)
+ (let ([input   (build-path dir (string-append name ".py"))]
+       [output (build-path dir (string-append name ".out"))])
+  (cond 
+   [(file-exists? output)  `(,input (matches-file ,output))]
+   [else                   `(,input fails)])))
+
+(define (tests-in-dir dir)
+ (map (curry test-for-name dir) 
+      (map name-for-test-file
+           (filter path/py? 
+                   (directory-list dir #:build? #t)))))
+
+(define parse-args
+ (command-line 
+  #:program "test-cases"
+  #:args (bin test-dir)
+  (thunk* 
+   (let ([test-dir-path (fix-path test-dir)]
+         [bin-path      (fix-path bin)])
+        (unless (directory-exists? test-dir-path)
+                (eprintf "Test directory \"~a\" doesn't exist.\n" 
+                         (path->string test-dir-path))
+                (exit 1))
+        (unless (and (file-exists? bin-path) 
+                     (in? 'execute 
+                          (file-or-directory-permissions bin-path)))
+                (eprintf 
+                 "Test binary \"~a\" does not exist or is not executable.\n"
+                 (path->string bin-path))
+                (exit 1))
+        (list bin-path (tests-in-dir test-dir-path))))))
+
+(define (case-passes? bin case)
+ (match-let* ([(list input output) case]
+              [input-port          (open-input-file input)]
+              [proc                (run bin #:input input-port)])
+  (close-input-port input-port)
+  (match output
+   ['fails           (= (hash-ref proc 'status) 1)]
+   [`(matches-file ,file)
+    (let ([output-port (open-input-file file)])
+     (begin0 (bytes=? (hash-ref proc 'stdout)
+                      (port->bytes output-port))
+             (close-input-port output-port)))])))
+
+(define *failure* (color "FAILURE" 'red))
+(define *success* (color "SUCCESS" 'green))
+
+(define (run-test-case bin case)
+ (let ([case-name (car (file-split (car case)))]
+       [passes    (case-passes? bin case)])
+  (printf "~a: ~a\n" (if passes *success* *failure*) case-name)
+  passes))
+
+(match-let ([(list bin cases)
+             (parse-args (current-command-line-arguments))])
+ (let* ([results    (map (curry run-test-case bin) cases)]
+        [case-count (length cases)]
+        [fail-count (count not results)])
+  (if (= 0 fail-count)
+      (displayln "All Passed")
+      (printf "~a/~a Failed" fail-count case-count))
+  (when (> fail-count 0) (exit 1))))
+
+;# vim: set syn=racket:
