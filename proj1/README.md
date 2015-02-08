@@ -18,12 +18,18 @@ wanted to run our tests against it you could do so using this command:
 
     $ ./test-cases ./pylex ./tests
 
+Tests not required for the assignment, but that should pass for full compliance
+with the python standard, are included in the `extra-tests` folder. You can
+test against these files if you want to check your compliance with the 
+whole standard.
+
 If you have tests that are not in this repository, you can supply any directory
 with tests following the convention described below. If you come up with any
 additional test cases, we'd love to add them to this repository so other
 can test against them as well. You can add tests to this repo the "github way"
 by [submitting a pull request][pull-request] (which is the easiest way for us), 
-or you can just email your test cases to Josh at `josh@kunz.xyz`. 
+or you can just email your test cases to Josh at `josh@kunz.xyz`, or Spencer
+at `spencer.phippen@gmail.com`. 
 We'll also be watching the mailing list for any test cases we can add.
 
 ### Test Case Format
