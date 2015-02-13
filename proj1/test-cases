@@ -5,6 +5,7 @@
 (require "lib/proc.rkt")
 (require "lib/common.rkt")
 (require "lib/term-colors.rkt")
+(require "lib/diff.rkt")
 
 (define (file-split f)
  (let* ([file (file-name-from-path f)]
@@ -56,27 +57,79 @@
                 (exit 1))
         (list bin-path (tests-in-dir test-dir-path))))))
 
-(define (case-passes? bin case)
+(define (list-split l on [cur '()])
+ (cond
+  [(and (null? l) 
+        (not (null? cur)))  (list cur)]
+  [(null? l)                cur]
+  [else
+   (let ([first (car l)] [rest (cdr l)])
+        (if (eqv? first on)
+            (cons cur (list-split rest on))
+            (list-split rest on (cons first cur))))]))
+
+(define (bytes-split bts [on (char->integer #\newline)])
+ (map (lambda (bs) (apply bytes (reverse bs)))
+      (list-split (bytes->list bts) on)))
+
+(define (matches?/fails proc) 
+ (list (not (= (hash-ref proc 'status) 0)) '()))
+
+(define (file->bytes f)
+ (let ([p (open-input-file f)])
+  (begin0 (port->bytes p)
+          (close-input-port p))))
+
+(define (matches?/file proc file)
+ (let* ([output-bytes (file->bytes file)]
+        [matches?     (bytes=? output-bytes (hash-ref proc 'stdout))])
+  (list
+   matches?
+   (if (not matches?)
+       (list-diff (bytes-split output-bytes)
+                  (bytes-split (hash-ref proc 'stdout)))
+       '()))))
+
+(define (check-case bin case)
  (match-let* ([(list input output) case]
               [input-port          (open-input-file input)]
               [proc                (run bin #:input input-port)])
   (close-input-port input-port)
-  (match output
-   ['fails           (= (hash-ref proc 'status) 1)]
-   [`(matches-file ,file)
-    (let ([output-port (open-input-file file)])
-     (begin0 (bytes=? (hash-ref proc 'stdout)
-                      (port->bytes output-port))
-             (close-input-port output-port)))])))
+  (define output-diff '())
+  (match-let ([(list matches? diff)
+               (match output
+                ['fails                 (matches?/fails proc)]
+                [`(matches-file ,file)  (matches?/file proc file)])])
+   (list matches? diff proc))))
 
 (define *failure* (color "FAILURE" 'red))
 (define *success* (color "SUCCESS" 'green))
+(define *added* (color "+" 'green))
+(define *removed* (color "-" 'red))
+(define *stderr*  (color "stderr" 'white))
+(define *exit* (color "exit" 'white))
+(define *diff* (color "diff" 'white))
+
+(define (display-added l) (printf "~a ~a\n" *added* l))
+(define (display-removed l) (printf "~a ~a\n" *removed* l))
+(define (display-same l) (printf "= ~a\n" l))
 
 (define (run-test-case bin case)
- (let ([case-name (car (file-split (car case)))]
-       [passes    (case-passes? bin case)])
-  (printf "~a: ~a\n" (if passes *success* *failure*) case-name)
-  passes))
+ (match-let ([case-name (car (file-split (car case)))]
+             [(list passes? diff proc) (check-case bin case)])
+  (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
+  (when (not passes?)
+   (printf " ~a -> ~a\n" *exit* (hash-ref proc 'status))
+   (printf " ~a ->\n" *stderr*)
+   (when (not (bytes=? (hash-ref proc 'stderr) #""))
+         (displayln (hash-ref proc 'stderr)))
+   (printf " ~a (from expected) ->\n" *diff*)
+   (for-each (match-lambda 
+              [(list #:added lns ...)   (for-each display-added lns)]
+              [(list #:removed lns ...) (for-each display-removed lns)]
+              [l                        (display-same l)])
+             diff))
+  passes?))
 
 (match-let ([(list bin cases)
              (parse-args (current-command-line-arguments))])
