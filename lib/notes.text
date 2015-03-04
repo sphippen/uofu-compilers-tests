@@ -1,0 +1,21 @@
+tokens:
+    (LIT <string>)
+        - Raw string
+        - binary
+        - leading 'u'
+        - unicode escapes
+        - newline escapes
+        - quote escapes
+    (LIT <number>)
+        - Integer literals (octal, binary hex)
+        - Floating literals ("dot notation", "exponent notation")
+        - Complex literals
+    (KEYWORD <symbol>) 
+        - symbol from section 2.3.1 of the python spec
+    (ID <string>)
+        - following identifer spec 
+    (PUNCT <string>)
+        - Operators
+        - Delimiters
+    (INDENT)
+    (DEDENT)

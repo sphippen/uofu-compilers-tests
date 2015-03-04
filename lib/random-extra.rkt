@@ -69,3 +69,10 @@
   (find-weighted-choice lst (random-real 0 wsum))
  )
 )
+
+; ****** Chance ******
+
+(define (chances->chance? chances)
+ (lambda (chance? sym)
+  (< (random-real 0 1) 
+     (hash-ref chances sym))))

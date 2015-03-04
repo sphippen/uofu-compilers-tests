@@ -1,0 +1,179 @@
+#! /usr/bin/env racket
+#lang racket
+
+(require racket/cmdline)
+(require racket/pretty)
+(require "../lib/proc.rkt")
+(require "../lib/common.rkt")
+(require "../lib/term-colors.rkt")
+
+(define (file-split f)
+ (let* ([file (file-name-from-path f)]
+        [ext  (bytes->string/utf-8 (filename-extension file))])
+  (let* ([file-string (path->string file)]
+         [file-len    (string-length file-string)])
+   (list (substring file-string 
+                    0 (- file-len (+ 1 (string-length ext))))
+         ext))))
+
+(define (path/py? f)
+ (match-let ([(list file-name ext) 
+              (file-split f)])
+  (string=? "py" ext)))
+
+(define (name-for-test-file f)
+ (car (file-split f)))
+
+(define (test-for-name dir name)
+ (let ([input   (build-path dir (string-append name ".py"))]
+       [output (build-path dir (string-append name ".out"))])
+  (cond 
+   [(file-exists? output)  `(,input (matches-file ,output))]
+   [else                   `(,input fails)])))
+
+(define (tests-in-dir dir)
+ (map (curry test-for-name dir) 
+      (map name-for-test-file
+           (filter path/py? 
+                   (directory-list dir #:build? #t)))))
+
+(define (valid-binary? b)
+ (and (file-exists? b)
+      (in? 'execute (file-or-directory-permissions b))))
+
+(define parse-args
+ (command-line 
+  #:program "test-cases"
+  #:args (pylex bin test-dir)
+  (thunk* 
+   (let ([test-dir-path (fix-path test-dir)]
+         [bin-path      (fix-path bin)]
+         [pylex-path    (fix-path pylex)])
+        (unless (directory-exists? test-dir-path)
+                (eprintf "Test directory \"~a\" doesn't exist.\n" 
+                         (path->string test-dir-path))
+                (exit 1))
+        (unless (valid-binary? pylex-path) 
+                (eprintf 
+                 "pylex binary \"~a\" does not exist or is not executable.\n"
+                 (path->string pylex-path))
+                (exit 1))
+        (unless (valid-binary? bin-path) 
+                (eprintf 
+                 "pyparse binary \"~a\" does not exist or is not executable.\n"
+                 (path->string bin-path))
+                (exit 1))
+        (list pylex-path bin-path (tests-in-dir test-dir-path))))))
+
+(define (list-split l on [cur '()])
+ (cond
+  [(and (null? l) 
+        (not (null? cur)))  (list cur)]
+  [(null? l)                cur]
+  [else
+   (let ([first (car l)] [rest (cdr l)])
+        (if (eqv? first on)
+            (cons cur (list-split rest on))
+            (list-split rest on (cons first cur))))]))
+
+(define (bytes-split bts [on (char->integer #\newline)])
+ (map (lambda (bs) (apply bytes (reverse bs)))
+      (list-split (bytes->list bts) on)))
+
+(define (file->bytes f)
+ (let ([p (open-input-file f)])
+  (begin0 (port->bytes p)
+          (close-input-port p))))
+
+(define (file->sexp f)
+ (let ([p (open-input-file f)])
+  (begin0 (port->list read p)
+          (close-input-port p))))
+
+(define (bytes->sexp b)
+ (let ([p (open-input-bytes b)])
+  (begin0 (port->list read p)
+          (close-input-port p))))
+
+(define (matches?/fails proc) 
+ (list (not (= (hash-ref proc 'status) 0)) 'nothing))
+
+(define (matches?/file proc file)
+ (let ([expected-sexp  (file->sexp file)])
+  (list (with-handlers ([exn:fail:read?  (thunk* #f)])
+           (equal? expected-sexp 
+                   (bytes->sexp (hash-ref proc 'stdout))))
+    expected-sexp)))
+
+(define (bin-proc-for-input pylex bin in)
+ (let ([lex-proc  (run pylex #:input in)])
+  (unless (= (hash-ref lex-proc 'status) 0)
+          (error 'pylex-exit))
+  (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
+   (begin0 (run bin #:input lex-input)
+           (close-input-port lex-input)))))
+
+(define (check-case pylex bin case)
+ (match-let* ([(list input output) case]
+              [input-port          (open-input-file input)]
+              [proc                (bin-proc-for-input pylex bin input-port)])
+  (close-input-port input-port)
+  (cons proc 
+   (match output
+         ['fails                 (matches?/fails proc)]
+         [`(matches-file ,file)  (matches?/file proc file)]))))
+
+(define *failure* (color "FAILURE" 'red))
+(define *success* (color "SUCCESS" 'green))
+(define *added* (color "+" 'green))
+(define *removed* (color "-" 'red))
+(define *stderr*  (color "stderr" 'white))
+(define *exit* (color "exit" 'white))
+(define *expected* (color "expected" 'white))
+(define *got*      (color "got" 'white))
+
+; ---> Exceptional Errors
+(define *not-sexp* (color "Not an S-Expression" 'yellow))
+(define *nothing* (color "Nothing" 'yellow))
+
+(define (prettify-bytes b)
+ (if (bytes=? b #"")
+     (displayln *nothing*)
+     (with-handlers ([exn:fail:read?  
+                      (thunk* (displayln *not-sexp*)
+                              (displayln b))])
+        (let ([got (bytes->sexp b)])
+             (newline)
+             (pretty-write got)))))
+
+(define (run-test-case pylex bin case)
+ (match-let ([case-name                         (car (file-split (car case)))]
+             [(list proc passes? expected)  (check-case pylex bin case)])
+  (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
+  (when (not passes?)
+   (printf " ~a -> ~a\n" *exit* 
+    (let* ([code   (hash-ref proc 'status)]
+           [code/s (format "~a" code)])
+     (if (= code 0) (color code/s 'green)
+                    (color code/s 'red))))
+   (printf " ~a -> " *stderr*)
+   (prettify-bytes (hash-ref proc 'stderr))
+   (printf " ~a -> " *expected*)
+   (if (eq? expected 'nothing)
+       (displayln *nothing*)
+       (begin0 (newline) (pretty-write expected)))
+   (printf " ~a -> " *got*)
+   (prettify-bytes (hash-ref proc 'stdout)))
+  passes?))
+
+(match-let ([(list pylex bin cases)
+             (parse-args (current-command-line-arguments))])
+ (let* ([results    (map (curry run-test-case pylex bin) cases)]
+        [case-count (length cases)]
+        [fail-count (count not results)])
+  (if (= 0 fail-count)
+      (displayln "All Passed")
+      (printf "~a/~a Failed" fail-count case-count))
+  (when (> fail-count 0) (exit 1))))
+
+;# vim: set syn=racket:
