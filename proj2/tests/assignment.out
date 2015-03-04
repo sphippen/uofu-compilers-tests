@@ -1,1 +1,1 @@
-(Module (Assign (targets ) (value (Num 1))))
+(Module (Assign (targets (Name a)) (value (Num 1))))
