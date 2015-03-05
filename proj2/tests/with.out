@@ -1,0 +1,6 @@
+(Module
+ (With (((Name foo) #f)) (Pass))
+ (With (((Name foo) (Name bar))) (Pass))
+ (With
+  (((Name foo) (Name bar)) ((Name rax) #f) ((Name quux) (Name foo)))
+  (Pass)))
