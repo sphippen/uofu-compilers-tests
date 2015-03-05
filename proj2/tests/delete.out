@@ -1,0 +1,11 @@
+(Module
+ (Delete (Name a))
+ (Delete (Name a) (Name b) (Name c))
+ (Delete (Starred (Name a)))
+ (Delete (Starred (Name a)) (Name b) (Name c))
+ (Delete (Starred (Name a)) (Starred (Name b)) (Starred (Name c)))
+ (Delete (Name a))
+ (Delete (Name a) (Name b) (Name c))
+ (Delete (Starred (Name a)) (Starred (Name b)) (Starred (Name c)))
+ (Delete (Subscript (Name foo) (Index (Name bar))))
+ (Delete (Attribute (Name quux) bar)))
