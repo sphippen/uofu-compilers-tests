@@ -1,0 +1,8 @@
+(Module
+ (While (test (Name a)) (body (Pass)) (orelse (Expr (Name bar))))
+ (While (test (BoolOp And (Name a) (Name b))) (body (Pass)) (orelse (Pass)))
+ (While (test (BoolOp And (Name a) (Name b))) (body (Pass)) (orelse (Pass)))
+ (While
+  (test (Name a))
+  (body (Assign (targets (Name a)) (value (Num 1))))
+  (orelse)))
