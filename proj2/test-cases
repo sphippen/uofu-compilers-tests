@@ -42,6 +42,13 @@
  (and (file-exists? b)
       (in? 'execute (file-or-directory-permissions b))))
 
+(define error-msg (lambda lines
+ (define *error* (color "ERROR" 'red))
+ (define *lead-space* 
+  (make-string (+ 2 (string-length "ERROR")) #\space))
+ (eprintf "~a: ~a\n" *error*
+          (string-join lines (string-append "\n" *lead-space*)))))
+
 (define parse-args
  (let ([no-diff? (make-parameter #f)])
   (command-line 
@@ -54,7 +61,8 @@
    (thunk* 
     (unless (no-diff?)
      (when (not (find-executable-path "diff"))
-           (eprintf "Couldn't find diff utility. Add it to the path or use the --no-diff option.\n")
+           (error-msg "Couldn't find diff utility. Add it to the path"
+                      "or use the --no-diff option.")
            (exit 1)))
     (let ([test-dir-path (fix-path test-dir)]
           [bin-path      (fix-path bin)]
@@ -64,14 +72,14 @@
                           (path->string test-dir-path))
                  (exit 1))
          (unless (valid-binary? pylex-path) 
-                 (eprintf 
-                  "pylex binary \"~a\" does not exist or is not executable.\n"
-                  (path->string pylex-path))
+                 (error-msg 
+                  (format "pylex binary \"~a\" does not exist or is not executable.\n"
+                  (path->string pylex-path)))
                  (exit 1))
          (unless (valid-binary? bin-path) 
-                 (eprintf 
-                  "pyparse binary \"~a\" does not exist or is not executable.\n"
-                  (path->string bin-path))
+                 (error-msg
+                  (format "pyparse binary \"~a\" does not exist or is not executable.\n"
+                  (path->string bin-path)))
                  (exit 1))
          (list (no-diff?) pylex-path bin-path (tests-in-dir test-dir-path)))))))
 
@@ -120,11 +128,11 @@
  (thunk 
   (channel-put ch
    (let ([lex-proc (run pylex #:input in)])
-    (unless (= (hash-ref lex-proc 'status) 0) 
-     '(failed pylex-exit))
-    (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
-     (begin0 (list 'succeeded (run bin #:input lex-input))
-             (close-input-port lex-input)))))))
+    (if (not (= (hash-ref lex-proc 'status) 0))
+        '(failed pylex-exit)
+        (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
+         (begin0 (list 'succeeded (run bin #:input lex-input))
+                       (close-input-port lex-input))))))))
 
 (define (bin-proc-for-input pylex bin in [timeout 15])
  (let* ([ch       (make-channel)]
@@ -186,7 +194,8 @@
    (display-maybe-nothing-bytes (hash-ref proc 'stderr))
    (match-let ([(list could-format? formatted-stdout) 
                 (formatted-bytes (hash-ref proc 'stdout))])
-    (if (and diff? could-format? (not (eq? expected 'nothing)))
+    (if (and diff? could-format? (not (eq? expected 'nothing))
+                                 (not (bytes=? formatted-stdout #"")))
         (begin (printf " ~a ->\n" *diff*)
                (display (diff/bytes (sexp->bytes expected) formatted-stdout)))
         (begin (printf " ~a -> " *expected*)
@@ -200,12 +209,15 @@
 
 (define (run-test-case/safe diff? pylex bin case)
  (define (handler sym)
-  (if (eq? sym 'no-term)
-      (begin (eprintf "~a: ~a\n~a\n" (color "ERROR" 'red)
-              "pyparse (or pylex) didn't exit after 15 seconds."
-              "       This is likely because of an infinite loop bug in pyparse.")
-             (exit 1))
-      (error sym)))
+  (match sym
+   ['no-term  (error-msg "pyparse (or pylex) didn't exit after 15 seconds."
+                         "This is likely because of an infinite loop bug in pyparse.")
+              (exit 1)]
+   ['pylex-exit (error-msg "pylex exited with a non-zero status. You may want to"
+                           "try using the reference pylex. The readme (http://git.io/x5Zu)"
+                           "describes how to use the reference pylex.")
+                (exit 1)]
+   [e   (error e)]))
  (with-handlers ([symbol? handler]) 
   (run-test-case diff? pylex bin case)))
 
