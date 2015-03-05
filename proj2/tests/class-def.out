@@ -1,6 +1,6 @@
 (Module
  (ClassDef
-  (name One)
+  (name _1)
   (bases)
   (keywords)
   (starargs #f)
@@ -8,7 +8,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Two)
+  (name _2)
   (bases)
   (keywords)
   (starargs #f)
@@ -16,7 +16,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Three)
+  (name _3)
   (bases (Name First))
   (keywords)
   (starargs #f)
@@ -24,7 +24,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Four)
+  (name _4)
   (bases (Name First))
   (keywords)
   (starargs #f)
@@ -32,7 +32,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Five)
+  (name _5)
   (bases (Name First) (Name Second) (Name Third))
   (keywords)
   (starargs #f)
@@ -40,7 +40,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Six)
+  (name _6)
   (bases (Name First) (Name Second) (Name Third))
   (keywords)
   (starargs #f)
@@ -48,7 +48,7 @@
   (body (Pass))
   (decorator_list))
  (ClassDef
-  (name Seven)
+  (name _7)
   (bases (Name First))
   (keywords)
   (starargs (Name Second))
@@ -211,6 +211,27 @@
     (kwargs (Name fourth)))))
  (ClassDef
   (name _23)
+  (bases)
+  (keywords)
+  (starargs #f)
+  (kwargs #f)
+  (body (Pass))
+  (decorator_list
+   (Name _23d1)
+   (Call
+    (func (Attribute (Attribute (Attribute (Name _23d2) a) b) c))
+    (args (Name PreFirst))
+    (keywords (First (Name foo)) (third (Name quux)))
+    (starargs (Name second))
+    (kwargs (Name fourth)))
+   (Call
+    (func (Name _23_rax))
+    (args (Name first))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (ClassDef
+  (name _24)
   (bases (Name PreFirst))
   (keywords (First (Name foo)) (Third (Name quux)))
   (starargs (Name Second))
@@ -221,8 +242,9 @@
    (Assign (targets (Name c)) (value (Num 3)))
    (Expr (BinOp (BinOp (Name a) Mult (Name b)) Mult (Name c))))
   (decorator_list
+   (Name _24d1)
    (Call
-    (func (Attribute (Attribute (Attribute (Name _23d) a) b) c))
+    (func (Attribute (Attribute (Attribute (Name _24d2) a) b) c))
     (args (Name PreFirst))
     (keywords (First (Name foo)) (third (Name quux)))
     (starargs (Name second))

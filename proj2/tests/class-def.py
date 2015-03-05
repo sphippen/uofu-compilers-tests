@@ -1,10 +1,10 @@
-class One: pass
-class Two(): pass
-class Three(First): pass
-class Four(First,): pass
-class Five(First, Second, Third): pass
-class Six(First, Second, Third,): pass
-class Seven(First, *Second): pass
+class _1: pass
+class _2(): pass
+class _3(First): pass
+class _4(First,): pass
+class _5(First, Second, Third): pass
+class _6(First, Second, Third,): pass
+class _7(First, *Second): pass
 class _8(First, Second=foo, Third=bar): pass
 class _9(First=foo, *Second, Third=quux, **Fourth): pass
 class _10(**First): pass
@@ -40,8 +40,14 @@ class _21: pass
 @_22d.a.b.c(PreFirst, First=foo, *second, third=quux, **fourth)
 class _22: pass
 
-@_23d.a.b.c(PreFirst, First=foo, *second, third=quux, **fourth)
-class _23(PreFirst, First=foo, *Second, Third=quux, **Fourth):
+@_23d1
+@_23d2.a.b.c(PreFirst, First=foo, *second, third=quux, **fourth)
+@_23_rax(first)
+class _23: pass
+
+@_24d1
+@_24d2.a.b.c(PreFirst, First=foo, *second, third=quux, **fourth)
+class _24(PreFirst, First=foo, *Second, Third=quux, **Fourth):
     a = 1
     b = 2
     c = 3
