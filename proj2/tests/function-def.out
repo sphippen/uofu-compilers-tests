@@ -1,0 +1,597 @@
+(Module
+ (FunctionDef
+  (name _1)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _2)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _3)
+  (args
+   (Arguments
+    (args a)
+    (arg-types (Name int))
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _4)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _5)
+  (args
+   (Arguments
+    (args a)
+    (arg-types (Name int))
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name b))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _6)
+  (args
+   (Arguments
+    (args a)
+    (arg-types (Name int))
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name b))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _7)
+  (args
+   (Arguments
+    (args a q)
+    (arg-types (Name int) (Name bar))
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name b) (Name c))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _8)
+  (args
+   (Arguments
+    (args a q)
+    (arg-types #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name b) (Name c))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _9)
+  (args
+   (Arguments
+    (args q r x a l n)
+    (arg-types #f #f (Name str) (Name foo) #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f #f (Name b) (Name m) (Name o))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _9)
+  (args
+   (Arguments
+    (args q r x a l n)
+    (arg-types #f #f (Name str) (Name foo) #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f #f (Name b) (Name m) (Name o))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _10)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs l)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _11)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg b)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _12)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg b (Name int))
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _13)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg b (Name int))
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name quux))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _14)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs foo)
+    (kwonlyarg-types #f)
+    (kw_defaults (Name quux))
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _15)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs foo)
+    (kwonlyarg-types (Name int))
+    (kw_defaults (Name quux))
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _16)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg rax (Name baz))
+    (kwonlyargs foo)
+    (kwonlyarg-types (Name int))
+    (kw_defaults (Name quux))
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _17)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg rax (Name baz))
+    (kwonlyargs foo d e g)
+    (kwonlyarg-types (Name int) #f #f (Name str))
+    (kw_defaults (Name quux) #f (Name f) #f)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _18)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg rax (Name baz))
+    (kwonlyargs foo d e g)
+    (kwonlyarg-types (Name int) #f #f (Name str))
+    (kw_defaults (Name quux) #f (Name f) #f)
+    (kwarg blah)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _19)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg rax (Name baz))
+    (kwonlyargs foo d e g)
+    (kwonlyarg-types (Name int) #f #f (Name str))
+    (kw_defaults (Name quux) #f (Name f) #f)
+    (kwarg blah (Name int))
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _20)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg baz (BinOp (Name quux) Pow (Name what)))
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _21)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg bar)
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _22)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg bar)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _24)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _25)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types (Name int))
+    (kw_defaults (Name b))
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _26)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types (Name int))
+    (kw_defaults (Name b))
+    (kwarg foo)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _27)
+  (args
+   (Arguments
+    (args a d b e)
+    (arg-types #f (Name int) #f (Name int))
+    (vararg g (Name int))
+    (kwonlyargs h j l m)
+    (kwonlyarg-types #f (Name int) #f (Name int))
+    (kw_defaults (Name i) (Name k) #f #f)
+    (kwarg n (Name int))
+    (defaults #f #f (Name c) (Name f))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _28)
+  (args
+   (Arguments
+    (args a d b e)
+    (arg-types #f (Name int) #f (Name int))
+    (vararg g (Name int))
+    (kwonlyargs h j l m)
+    (kwonlyarg-types #f (Name int) #f (Name int))
+    (kw_defaults (Name i) (Name k) #f #f)
+    (kwarg n (Name int))
+    (defaults #f #f (Name c) (Name f))))
+  (body
+   (Assign (targets (Name a)) (value (Num 1)))
+   (Assign (targets (Name b)) (value (Num 2)))
+   (Assign (targets (Name c)) (value (Num 3)))
+   (Assign
+    (targets (Tuple (Name a) (Name b) (Name c)))
+    (value
+     (BinOp
+      (Call
+       (func (Name foo))
+       (args
+        (Lambda
+         (Arguments
+          (args x)
+          (arg-types #f)
+          (vararg #f)
+          (kwonlyargs)
+          (kwonlyarg-types)
+          (kw_defaults)
+          (kwarg #f)
+          (defaults #f))
+         (Name y))
+        (Name z))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))
+      Add
+      (Name q)))))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _29)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list (Name _29d))
+  (returns #f))
+ (FunctionDef
+  (name _30)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list (Attribute (Attribute (Attribute (Name _30d) a) b) c))
+  (returns #f))
+ (FunctionDef
+  (name _31)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list
+   (Call
+    (func (Name _31d))
+    (args (Name a))
+    (keywords)
+    (starargs #f)
+    (kwargs #f)))
+  (returns #f))
+ (FunctionDef
+  (name _32)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list
+   (Call
+    (func (Name _32d))
+    (args (Name a) (Name d))
+    (keywords (b (Name c)) (e (Name f)) (h (Name i)) (j (Name k)))
+    (starargs (Name g))
+    (kwargs (Name n))))
+  (returns #f))
+ (FunctionDef
+  (name _33)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list
+   (Call
+    (func (Attribute (Attribute (Attribute (Name _33d) a) b) c))
+    (args (Name a) (Name d))
+    (keywords (b (Name c)) (e (Name f)) (h (Name i)) (j (Name k)))
+    (starargs (Name g))
+    (kwargs (Name n))))
+  (returns #f))
+ (FunctionDef
+  (name _34)
+  (args
+   (Arguments
+    (args a d b e)
+    (arg-types #f (Name int) #f (Name int))
+    (vararg g (Name int))
+    (kwonlyargs h j l m)
+    (kwonlyarg-types #f (Name int) #f (Name int))
+    (kw_defaults (Name i) (Name k) #f #f)
+    (kwarg n (Name int))
+    (defaults #f #f (Name c) (Name f))))
+  (body
+   (Assign (targets (Name a)) (value (Num 1)))
+   (Assign (targets (Name b)) (value (Num 2)))
+   (Assign (targets (Name c)) (value (Num 3)))
+   (Assign
+    (targets (Tuple (Name a) (Name b) (Name c)))
+    (value
+     (BinOp
+      (Call
+       (func (Name foo))
+       (args
+        (Lambda
+         (Arguments
+          (args x)
+          (arg-types #f)
+          (vararg #f)
+          (kwonlyargs)
+          (kwonlyarg-types)
+          (kw_defaults)
+          (kwarg #f)
+          (defaults #f))
+         (Name y))
+        (Name z))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))
+      Add
+      (Name q)))))
+  (decorator_list
+   (Name _34d1)
+   (Attribute (Attribute (Attribute (Name _34d2) a) b) c)
+   (Call
+    (func (Name _34d3))
+    (args (Name a))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))
+   (Call
+    (func (Attribute (Attribute (Attribute (Name _34d4) a) b) c))
+    (args (Name a) (Name d))
+    (keywords (b (Name c)) (e (Name f)) (h (Name i)) (j (Name k)))
+    (starargs (Name g))
+    (kwargs (Name n))))
+  (returns #f)))
