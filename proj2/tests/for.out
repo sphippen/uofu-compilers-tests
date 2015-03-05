@@ -1,0 +1,19 @@
+(Module
+ (For
+  (target (Name a))
+  (iter (Name b))
+  (body (Pass))
+  (orelse (Expr (Name bar))))
+ (For
+  (target (Tuple (Name a) (Name b) (Name c)))
+  (iter (Tuple (Name q) (Name r) (Name x)))
+  (body (Pass))
+  (orelse))
+ (For
+  (target (Tuple (Name a) (Starred (Name b)) (Starred (Name c))))
+  (iter (Tuple (Name x) (Name y) (Name z)))
+  (body
+   (Assign (targets (Name a)) (value (Name x)))
+   (Assign (targets (Name b)) (value (Name y)))
+   (Assign (targets (Name z)) (value (Name z))))
+  (orelse (Assign (targets (Name a)) (value (Name y))))))
