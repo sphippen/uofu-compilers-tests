@@ -1,0 +1,24 @@
+(Module
+ (Try
+  (body (Pass))
+  (handlers (except #f #f (Pass)) (except #f #f (Pass)) (except #f #f (Pass)))
+  (orelse (Pass))
+  (finalbody (Pass)))
+ (Try (body (Pass)) (handlers) (orelse) (finalbody (Pass)))
+ (Try
+  (body
+   (Try
+    (body
+     (Try
+      (body (Pass))
+      (handlers (except (Name foo) #f (Pass)))
+      (orelse)
+      (finalbody)))
+    (handlers
+     (except (Name bar) quux (Assign (targets (Name bar)) (value (Num 1))))
+     (except (Name total) #f (Assign (targets (Name total)) (value (Num 1)))))
+    (orelse)
+    (finalbody (Expr (Name blah)))))
+  (handlers (except #f #f (Pass)))
+  (orelse (Break))
+  (finalbody)))
