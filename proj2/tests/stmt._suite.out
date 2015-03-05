@@ -1,0 +1,129 @@
+(Module
+ (FunctionDef
+  (name _1)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _2)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (FunctionDef
+    (name _2a)
+    (args
+     (Arguments
+      (args)
+      (arg-types)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults)))
+    (body
+     (FunctionDef
+      (name _2b)
+      (args
+       (Arguments
+        (args)
+        (arg-types)
+        (vararg #f)
+        (kwonlyargs)
+        (kwonlyarg-types)
+        (kw_defaults)
+        (kwarg #f)
+        (defaults)))
+      (body
+       (FunctionDef
+        (name _2c)
+        (args
+         (Arguments
+          (args)
+          (arg-types)
+          (vararg #f)
+          (kwonlyargs)
+          (kwonlyarg-types)
+          (kw_defaults)
+          (kwarg #f)
+          (defaults)))
+        (body
+         (FunctionDef
+          (name _2e)
+          (args
+           (Arguments
+            (args)
+            (arg-types)
+            (vararg #f)
+            (kwonlyargs)
+            (kwonlyarg-types)
+            (kw_defaults)
+            (kwarg #f)
+            (defaults)))
+          (body
+           (Try
+            (body (Assign (targets (Name a)) (value (Name b))))
+            (handlers
+             (except
+              (Name Foo)
+              #f
+              (Assign (targets (Name a)) (value (Num 1)))))
+            (orelse)
+            (finalbody))
+           (Return (Name a)))
+          (decorator_list)
+          (returns #f))
+         (Return
+          (Call
+           (func (Name _2e))
+           (args (Name a))
+           (keywords)
+           (starargs #f)
+           (kwargs #f))))
+        (decorator_list)
+        (returns #f))
+       (Return
+        (Call
+         (func (Name _2c))
+         (args (Name a))
+         (keywords)
+         (starargs #f)
+         (kwargs #f))))
+      (decorator_list)
+      (returns #f))
+     (Return
+      (Call
+       (func (Name _2b))
+       (args (Name a))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))))
+    (decorator_list)
+    (returns #f))
+   (Return
+    (Call
+     (func (Name _2b))
+     (args (Name a))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (decorator_list)
+  (returns #f)))
