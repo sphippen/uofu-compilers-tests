@@ -123,25 +123,32 @@
                    (bytes->sexp (hash-ref proc 'stdout))))
     expected-sexp)))
 
+(struct exn:fail:timeout exn:fail (timeout)
+    #:extra-constructor-name make-exn:fail:timeout
+    #:transparent)
 
-(define (_proc-thread ch pylex bin in) 
- (thunk 
-  (channel-put ch
-   (let ([lex-proc (run pylex #:input in)])
-    (if (not (= (hash-ref lex-proc 'status) 0))
-        '(failed pylex-exit)
-        (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
-         (begin0 (list 'succeeded (run bin #:input lex-input))
-                       (close-input-port lex-input))))))))
+(define-syntax-rule (begin/timeout timeout body ...)
+ (let* ([ch     (make-channel)])
+  (thread 
+   (thunk (channel-put ch
+           (with-handlers ([(thunk* #t) (lambda (x) (list 'error x))])
+            (list 'success (begin body ...))))))
+  (match (sync/timeout timeout ch)
+   [#f              (raise (make-exn:fail:timeout 
+                            (format "Timeout after ~a s" timeout)
+                            (current-continuation-marks)
+                            timeout))]
+   [`(error ,what)  (raise what)]
+   [`(success ,r)   r])))
 
 (define (bin-proc-for-input pylex bin in [timeout 15])
- (let* ([ch       (make-channel)]
-        [proc_t   (_proc-thread ch pylex bin in)])
-  (thread proc_t)
-  (match (sync/timeout timeout ch)
-   [#f                 (raise 'no-term)]
-   [`(failed    ,how)  (raise how)]
-   [`(succeeded ,with) with])))
+ (begin/timeout timeout
+  (let ([lex-proc (run pylex #:input in)])
+   (if (not (= (hash-ref lex-proc 'status) 0))
+       (raise 'pylex-exit)
+       (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
+            (begin0 (run bin #:input lex-input)
+                    (close-input-port lex-input)))))))
 
 (define (check-case pylex bin case)
  (match-let* ([(list input output) case]
@@ -208,17 +215,18 @@
   passes?))
 
 (define (run-test-case/safe diff? pylex bin case)
- (define (handler sym)
+ (define (sym-handler sym)
   (match sym
-   ['no-term  (error-msg "pyparse (or pylex) didn't exit after 15 seconds."
-                         "This is likely because of an infinite loop bug in pyparse.")
-              (exit 1)]
    ['pylex-exit (error-msg "pylex exited with a non-zero status. You may want to"
                            "try using the reference pylex. The readme (http://git.io/x5Zu)"
                            "describes how to use the reference pylex.")
                 (exit 1)]
    [e   (error e)]))
- (with-handlers ([symbol? handler]) 
+ (with-handlers ([symbol? sym-handler]
+                 [exn:fail:timeout? (thunk*
+                  (error-msg "pyparse (or pylex) didn't exit after 15 seconds."
+                             "This is likely because of an infinite loop bug in pyparse.")
+                  (exit 1))])
   (run-test-case diff? pylex bin case)))
 
 (print-as-expression #f)
