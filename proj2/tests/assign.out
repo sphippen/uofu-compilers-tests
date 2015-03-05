@@ -1,0 +1,32 @@
+(Module
+ (Assign (targets (Name a)) (value (Name b)))
+ (Assign (targets (Tuple (Name a) (Name b))) (value (Name c)))
+ (Assign (targets (Tuple (Name a))) (value (Name c)))
+ (Assign (targets (Tuple (Name a) (Name b))) (value (Name c)))
+ (Assign (targets (Name a)) (value (Yield)))
+ (Assign (targets (Name a)) (value (YieldFrom (Name baz))))
+ (Assign (targets (Tuple (Name a) (Name b) (Name c))) (value (Yield)))
+ (Assign
+  (targets (Tuple (Name a) (Name b) (Name c)))
+  (value (YieldFrom (Name baz))))
+ (Assign
+  (targets (Name a))
+  (value
+   (Call
+    (func (Name foo))
+    (args (BinOp (BinOp (Num 10) Mult (Name f)) Add (Num 22)))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Assign
+  (targets (Tuple (Name a) (Name b) (Starred (Name c))))
+  (value (List (Num 1) (Num 2) (Num 3) (Num 4) (Num 5))))
+ (Assign
+  (targets
+   (Tuple
+    (Starred (Name a))
+    (Starred (Name b))
+    (Starred (Name foo))
+    (Starred (Name x))))
+  (value (Num 12)))
+ (Assign (targets (Starred (Name _))) (value (Num 12))))

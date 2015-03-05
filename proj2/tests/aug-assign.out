@@ -1,0 +1,23 @@
+(Module
+ (AugAssign (Name a) Add (Name b))
+ (AugAssign (Name a) Sub (Name b))
+ (AugAssign (Name a) Mult (Name b))
+ (AugAssign (Name a) Div (Name b))
+ (AugAssign (Name a) Mod (Name b))
+ (AugAssign (Name a) BitAnd (Name b))
+ (AugAssign (Name a) BitOr (Name b))
+ (AugAssign (Name a) BitXor (Name b))
+ (AugAssign (Name a) LShift (Name b))
+ (AugAssign (Name a) RShift (Name b))
+ (AugAssign (Name a) Pow (Name b))
+ (AugAssign (Name a) FloorDiv (Name b))
+ (AugAssign (Name a) Add (BinOp (Name b) Add (Name c)))
+ (AugAssign
+  (Name a)
+  Sub
+  (BinOp (BinOp (Name b) Mult (Name f)) Mult (Name rax)))
+ (AugAssign (Name a) Mult (BinOp (Name b) Div (Num 10)))
+ (AugAssign (Name a) Div (BinOp (Name b) Add (Name q)))
+ (AugAssign (Name a) Mod (BinOp (Name b) BitOr (Num 1)))
+ (AugAssign (Name a) BitAnd (BinOp (Name b) BitXor (Name foo)))
+ (AugAssign (Name a) BitOr (BinOp (Name b) BitAnd (Name bar))))

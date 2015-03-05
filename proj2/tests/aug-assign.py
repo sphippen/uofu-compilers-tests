@@ -1,0 +1,20 @@
+a += b
+a -= b
+a *= b
+a /= b
+a %= b
+a &= b
+a |= b
+a ^= b
+a <<= b
+a >>= b
+a **= b
+a //= b
+
+a += b + c
+a -= b * f * rax
+a *= b / 10
+a /= b + q
+a %= b | 1
+a &= b ^ foo
+a |= b & bar

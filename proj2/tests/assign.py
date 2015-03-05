@@ -1,0 +1,12 @@
+a = b
+a, b = c
+a, = c
+a, b, = c
+a = yield
+a = yield from baz
+a, b, c = yield
+a, b, c = yield from baz
+a = foo(10 * f + 22)
+a, b, *c = [1, 2, 3, 4, 5]
+*a, *b, *foo, *x = 12
+*_ = 12
