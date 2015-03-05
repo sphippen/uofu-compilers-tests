@@ -12,7 +12,7 @@
 (define (run binary #:input [input-port null] . flags)
  ; Run the program as a subprocess
  (let-values ([(proc proc-stdout proc-stdin proc-stderr)
-               (apply subprocess (append (list #f #f #f binary) flags))])
+               (apply subprocess (list* #f #f #f binary flags))])
   (when (not (null? input-port))
    (with-handlers ([exn:fail:filesystem? (thunk* (void))])
     (copy-port input-port proc-stdin)))

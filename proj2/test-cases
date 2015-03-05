@@ -6,6 +6,7 @@
 (require "../lib/proc.rkt")
 (require "../lib/common.rkt")
 (require "../lib/term-colors.rkt")
+(require "../lib/diff.rkt")
 
 (define (file-split f)
  (let* ([file (file-name-from-path f)]
@@ -42,28 +43,37 @@
       (in? 'execute (file-or-directory-permissions b))))
 
 (define parse-args
- (command-line 
-  #:program "test-cases"
-  #:args (pylex bin test-dir)
-  (thunk* 
-   (let ([test-dir-path (fix-path test-dir)]
-         [bin-path      (fix-path bin)]
-         [pylex-path    (fix-path pylex)])
-        (unless (directory-exists? test-dir-path)
-                (eprintf "Test directory \"~a\" doesn't exist.\n" 
-                         (path->string test-dir-path))
-                (exit 1))
-        (unless (valid-binary? pylex-path) 
-                (eprintf 
-                 "pylex binary \"~a\" does not exist or is not executable.\n"
-                 (path->string pylex-path))
-                (exit 1))
-        (unless (valid-binary? bin-path) 
-                (eprintf 
-                 "pyparse binary \"~a\" does not exist or is not executable.\n"
-                 (path->string bin-path))
-                (exit 1))
-        (list pylex-path bin-path (tests-in-dir test-dir-path))))))
+ (let ([no-diff? (make-parameter #f)])
+  (command-line 
+   #:program "test-cases"
+   #:once-any
+   ["--no-diff"    ("Don't use the unix diff utility, just print out the "
+                    "expected and received outputs.")
+                   (no-diff? #t)]
+   #:args (pylex bin test-dir)
+   (thunk* 
+    (unless (no-diff?)
+     (when (not (find-executable-path "diff"))
+           (eprintf "Couldn't find diff utility. Add it to the path or use the --no-diff option.\n")
+           (exit 1)))
+    (let ([test-dir-path (fix-path test-dir)]
+          [bin-path      (fix-path bin)]
+          [pylex-path    (fix-path pylex)])
+         (unless (directory-exists? test-dir-path)
+                 (eprintf "Test directory \"~a\" doesn't exist.\n" 
+                          (path->string test-dir-path))
+                 (exit 1))
+         (unless (valid-binary? pylex-path) 
+                 (eprintf 
+                  "pylex binary \"~a\" does not exist or is not executable.\n"
+                  (path->string pylex-path))
+                 (exit 1))
+         (unless (valid-binary? bin-path) 
+                 (eprintf 
+                  "pyparse binary \"~a\" does not exist or is not executable.\n"
+                  (path->string bin-path))
+                 (exit 1))
+         (list (no-diff?) pylex-path bin-path (tests-in-dir test-dir-path)))))))
 
 (define (list-split l on [cur '()])
  (cond
@@ -125,28 +135,32 @@
 
 (define *failure* (color "FAILURE" 'red))
 (define *success* (color "SUCCESS" 'green))
-(define *added* (color "+" 'green))
-(define *removed* (color "-" 'red))
 (define *stderr*  (color "stderr" 'white))
 (define *exit* (color "exit" 'white))
 (define *expected* (color "expected" 'white))
 (define *got*      (color "got" 'white))
+(define *diff*     (color "diff" 'white))
 
 ; ---> Exceptional Errors
 (define *not-sexp* (color "Not an S-Expression" 'yellow))
 (define *nothing* (color "Nothing" 'yellow))
 
-(define (prettify-bytes b)
- (if (bytes=? b #"")
-     (displayln *nothing*)
-     (with-handlers ([exn:fail:read?  
-                      (thunk* (displayln *not-sexp*)
-                              (displayln b))])
-        (let ([got (bytes->sexp b)])
-             (newline)
-             (pretty-write got)))))
+(define (sexp->bytes s)
+ (string->bytes/utf-8
+  (pretty-format s)))
 
-(define (run-test-case pylex bin case)
+(define (formatted-bytes b)
+ (if (bytes=? b #"")
+     (list #t #"")
+     (with-handlers ([exn:fail:read? (thunk* (list #f b))])
+      (list #t (sexp->bytes (bytes->sexp b))))))
+
+(define (display-maybe-nothing-bytes b)
+ (if (bytes=? b #"")
+     (displayln *nothing*) 
+     (begin (newline) (displayln b))))
+
+(define (run-test-case diff? pylex bin case)
  (match-let ([case-name                         (car (file-split (car case)))]
              [(list proc passes? expected)  (check-case pylex bin case)])
   (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
@@ -157,18 +171,25 @@
      (if (= code 0) (color code/s 'green)
                     (color code/s 'red))))
    (printf " ~a -> " *stderr*)
-   (prettify-bytes (hash-ref proc 'stderr))
-   (printf " ~a -> " *expected*)
-   (if (eq? expected 'nothing)
-       (displayln *nothing*)
-       (begin0 (newline) (pretty-write expected)))
-   (printf " ~a -> " *got*)
-   (prettify-bytes (hash-ref proc 'stdout)))
+   (display-maybe-nothing-bytes (hash-ref proc 'stderr))
+   (match-let ([(list could-format? formatted-stdout) 
+                (formatted-bytes (hash-ref proc 'stdout))])
+    (if (and diff? could-format? (not (eq? expected 'nothing)))
+        (begin (printf " ~a ->\n" *diff*)
+               (display (diff/bytes (sexp->bytes expected) formatted-stdout)))
+        (begin (printf " ~a -> " *expected*)
+               (display-maybe-nothing-bytes 
+                (if (eq? expected 'nothing) #"" (sexp->bytes expected)))
+               (printf " ~a -> " *got*)
+               ; could-format? is never true when stdout is empty
+               (when (not could-format?) (display *not-sexp*))
+               (display-maybe-nothing-bytes formatted-stdout)))))
   passes?))
 
-(match-let ([(list pylex bin cases)
+(print-as-expression #f)
+(match-let ([(list no-diff? pylex bin cases)
              (parse-args (current-command-line-arguments))])
- (let* ([results    (map (curry run-test-case pylex bin) cases)]
+ (let* ([results    (map (curry run-test-case (not no-diff?) pylex bin) cases)]
         [case-count (length cases)]
         [fail-count (count not results)])
   (if (= 0 fail-count)
