@@ -20,39 +20,23 @@ wanted to run our tests against it you could do so using this command:
     $ ./test-cases ./pylex ./pyparse ./tests
 
 
-### Using `pylex` on vulcan
+### Using Reference `pylex`
 
-This is pretty easy, just run the following command:
+The `helpers` directory contains a script that will act like the reference
+pylex. To use that script as the pylex implementation run:
 
-    $ ./test-cases `which pylex` <path-to-pyparse> <test-dir>
-
-### Using Local Reference `pylex`
-
-To use the reference pylex, create a file called `./ref-lex` with the
-contents:
-
-```bash
-#!/usr/bin/env bash
-exec racket <path-to-pylex.zo>
-```
-
-Where you replace `<path-to-pylex.zo>` with the path to your downloaded copy of the
-lexer library (located at `/usr/local/share/python-compiler/pylex.zo` on vulcan).
-Then, mark the script as executable using `chmod u+x ./ref-lex`. Now you
-should be able to run the tester with the following command:
-
-    $ ./test-cases ./ref-lex <path-to-pyparse> <test-dir>
+    $ ./test-cases ./helpers/ref-lex <path-to-pyparse> <test-dir>
 
 ### Running Tests Against reference `pysx` or `pyparse`
 
 If you want to see if `pyparse` or `pysx` fails a given test-case, you can
-use the following commands. For reference `pyparse` on vulcan:
+use the following commands. For reference `pyparse`:
 
-    $ ./test-cases `which pylex` `which pyparse` <test-dir>
+    $ ./test-cases ./helpers/ref-lex ./helpers/ref-parse  <test-dir>
 
-For reference `pysx` on vulcan:
+For reference `pysx`:
 
-    $ ./test-cases `which cat` `which pysx` <test-dir>
+    $ ./test-cases `which cat` ./helpers/pysx  <test-dir>
 
 ## Extra Tests
 
