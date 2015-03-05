@@ -1,0 +1,24 @@
+(Module
+ (If
+  (test (Name a))
+  (body (Pass))
+  (orelse
+   (If
+    (test (Name b))
+    (body (Pass))
+    (orelse
+     (If
+      (test (Name c))
+      (body (Pass))
+      (orelse (If (test (Name d)) (body (Pass)) (orelse (Pass)))))))))
+ (If (test (Name a)) (body (Pass)) (orelse))
+ (If (test (Name a)) (body (Pass)) (orelse))
+ (If (test (BoolOp And (Name a) (Name b))) (body (Pass)) (orelse))
+ (If
+  (test (BoolOp And (Name a) (Name b)))
+  (body (Pass))
+  (orelse (If (test (BoolOp And (Name b) (Name c))) (body (Pass)) (orelse))))
+ (If
+  (test (BoolOp And (Name a) (Name b)))
+  (body (Pass))
+  (orelse (Expr (Name c)))))
