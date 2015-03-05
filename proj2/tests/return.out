@@ -1,0 +1,12 @@
+(Module
+ (Return)
+ (Return (Name a))
+ (Return (Tuple (Name a) (Name b) (Name c)))
+ (Return (Tuple (Name a)))
+ (Return
+  (Call
+   (func (Name foo))
+   (args (Num 10))
+   (keywords)
+   (starargs (IfExp (Name bar) (Name foo) (Name quux)))
+   (kwargs #f))))
