@@ -115,13 +115,25 @@
                    (bytes->sexp (hash-ref proc 'stdout))))
     expected-sexp)))
 
-(define (bin-proc-for-input pylex bin in)
- (let ([lex-proc  (run pylex #:input in)])
-  (unless (= (hash-ref lex-proc 'status) 0)
-          (error 'pylex-exit))
-  (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
-   (begin0 (run bin #:input lex-input)
-           (close-input-port lex-input)))))
+
+(define (_proc-thread ch pylex bin in) 
+ (thunk 
+  (channel-put ch
+   (let ([lex-proc (run pylex #:input in)])
+    (unless (= (hash-ref lex-proc 'status) 0) 
+     '(failed pylex-exit))
+    (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
+     (begin0 (list 'succeeded (run bin #:input lex-input))
+             (close-input-port lex-input)))))))
+
+(define (bin-proc-for-input pylex bin in [timeout 15])
+ (let* ([ch       (make-channel)]
+        [proc_t   (_proc-thread ch pylex bin in)])
+  (thread proc_t)
+  (match (sync/timeout timeout ch)
+   [#f                 (raise 'no-term)]
+   [`(failed    ,how)  (raise how)]
+   [`(succeeded ,with) with])))
 
 (define (check-case pylex bin case)
  (match-let* ([(list input output) case]
@@ -186,10 +198,21 @@
                (display-maybe-nothing-bytes formatted-stdout)))))
   passes?))
 
+(define (run-test-case/safe diff? pylex bin case)
+ (define (handler sym)
+  (if (eq? sym 'no-term)
+      (begin (eprintf "~a: ~a\n~a\n" (color "ERROR" 'red)
+              "pyparse (or pylex) didn't exit after 15 seconds."
+              "       This is likely because of an infinite loop bug in pyparse.")
+             (exit 1))
+      (error sym)))
+ (with-handlers ([symbol? handler]) 
+  (run-test-case diff? pylex bin case)))
+
 (print-as-expression #f)
 (match-let ([(list no-diff? pylex bin cases)
              (parse-args (current-command-line-arguments))])
- (let* ([results    (map (curry run-test-case (not no-diff?) pylex bin) cases)]
+ (let* ([results    (map (curry run-test-case/safe (not no-diff?) pylex bin) cases)]
         [case-count (length cases)]
         [fail-count (count not results)])
   (if (= 0 fail-count)
