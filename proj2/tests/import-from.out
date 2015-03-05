@@ -1,0 +1,12 @@
+(Module
+ (ImportFrom (module #f) (names (* #f)) (level 1))
+ (ImportFrom (module #f) (names (a #f)) (level 1))
+ (ImportFrom (module #f) (names (a #f) (b #f) (c #f)) (level 1))
+ (ImportFrom (module #f) (names (a #f) (b #f) (c #f)) (level 1))
+ (ImportFrom (module #f) (names (a foo) (b boo) (c coo)) (level 1))
+ (ImportFrom (module #f) (names (a foo) (b boo) (c coo)) (level 1))
+ (ImportFrom (module #f) (names (a foo) (b boo) (c coo)) (level 1))
+ (ImportFrom (module #f) (names (a #f) (b #f) (c #f)) (level 1))
+ (ImportFrom (module #f) (names (a #f)) (level 5))
+ (ImportFrom (module a.b.c) (names (rax #f)) (level 1))
+ (ImportFrom (module a.b.c) (names (qq #f)) (level 4)))

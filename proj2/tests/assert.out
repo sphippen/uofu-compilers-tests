@@ -1,0 +1,9 @@
+(Module
+ (Assert (Name a))
+ (Assert (NameConstant True))
+ (Assert
+  (BoolOp
+   And
+   (Name a)
+   (Compare (left (Name b)) (ops Eq) (comparators (Name c)))))
+ (Assert (Name foo) (Name bar)))

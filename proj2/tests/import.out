@@ -1,0 +1,8 @@
+(Module
+ (Import (a #f))
+ (Import (a b))
+ (Import (a.q #f))
+ (Import (a.q.f.g c))
+ (Import (a #f) (b #f) (c #f))
+ (Import (a foo) (b bar) (c rax))
+ (Import (a.bar foo) (b.foo bar) (c.rax rax)))
