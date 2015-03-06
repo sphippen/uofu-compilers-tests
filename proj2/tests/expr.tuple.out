@@ -1,0 +1,9 @@
+(Module
+ (Expr (Tuple (Name a) (Name b) (Name c)))
+ (Expr (Tuple (Name a) (Name b) (Name c)))
+ (Expr (Tuple (BinOp (Name a) Add (Name b)) (Name c) (Name q)))
+ (Expr (Tuple (Name a)))
+ (Expr (Name a))
+ (Expr (Tuple (Name a)))
+ (Expr (Tuple (Name a) (Name b) (Name c) (Name d)))
+ (Expr (Tuple (Name a) (Name b) (Name c) (Name d))))
