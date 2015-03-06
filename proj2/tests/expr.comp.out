@@ -1,0 +1,154 @@
+(Module
+ (Expr
+  (ListComp
+   (Tuple (Name x) (Name y))
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name foo))
+     (args (Num 4))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if
+    (Compare (left (Name x)) (ops Gt) (comparators (Num 0)))
+    (Compare
+     (left (BinOp (Num 2) Add (Num 3)))
+     (ops Eq)
+     (comparators (Num 5))))
+   (for
+    (Tuple (Name a) (Name b) (Starred (Name c)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)
+   (for
+    (Tuple (Starred (Name d)) (Name e) (Starred (Name f)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 8))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)))
+ (Expr
+  (GeneratorExp
+   (Tuple (Name x) (Name y))
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name foo))
+     (args (Num 4))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if
+    (Compare (left (Name x)) (ops Gt) (comparators (Num 0)))
+    (Compare
+     (left (BinOp (Num 2) Add (Num 3)))
+     (ops Eq)
+     (comparators (Num 5))))
+   (for
+    (Tuple (Name a) (Name b) (Starred (Name c)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)
+   (for
+    (Tuple (Starred (Name d)) (Name e) (Starred (Name f)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 8))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)))
+ (Expr
+  (SetComp
+   (Tuple (Name x) (Name y))
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name foo))
+     (args (Num 4))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if
+    (Compare (left (Name x)) (ops Gt) (comparators (Num 0)))
+    (Compare
+     (left (BinOp (Num 2) Add (Num 3)))
+     (ops Eq)
+     (comparators (Num 5))))
+   (for
+    (Tuple (Name a) (Name b) (Starred (Name c)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)
+   (for
+    (Tuple (Starred (Name d)) (Name e) (Starred (Name f)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 8))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)))
+ (Expr
+  (DictComp
+   (Name x)
+   (Name y)
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name foo))
+     (args (Num 4))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if
+    (Compare (left (Name x)) (ops Gt) (comparators (Num 0)))
+    (Compare
+     (left (BinOp (Num 2) Add (Num 3)))
+     (ops Eq)
+     (comparators (Num 5))))
+   (for
+    (Tuple (Name a) (Name b) (Starred (Name c)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)
+   (for
+    (Tuple (Starred (Name d)) (Name e) (Starred (Name f)))
+    in
+    (Call
+     (func (Name bar))
+     (args (Num 8))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if))))
