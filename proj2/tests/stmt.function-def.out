@@ -135,7 +135,7 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _9)
+  (name _10)
   (args
    (Arguments
     (args q r x a l n)
@@ -150,7 +150,7 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _10)
+  (name _11)
   (args
    (Arguments
     (args a)
@@ -165,27 +165,12 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _11)
-  (args
-   (Arguments
-    (args a)
-    (arg-types #f)
-    (vararg b)
-    (kwonlyargs)
-    (kwonlyarg-types)
-    (kw_defaults)
-    (kwarg #f)
-    (defaults #f)))
-  (body (Pass))
-  (decorator_list)
-  (returns #f))
- (FunctionDef
   (name _12)
   (args
    (Arguments
     (args a)
     (arg-types #f)
-    (vararg b (Name int))
+    (vararg b)
     (kwonlyargs)
     (kwonlyarg-types)
     (kw_defaults)
@@ -205,12 +190,27 @@
     (kwonlyarg-types)
     (kw_defaults)
     (kwarg #f)
-    (defaults (Name quux))))
+    (defaults #f)))
   (body (Pass))
   (decorator_list)
   (returns #f))
  (FunctionDef
   (name _14)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg b (Name int))
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Name quux))))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _15)
   (args
    (Arguments
     (args a)
@@ -225,27 +225,12 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _15)
-  (args
-   (Arguments
-    (args a)
-    (arg-types #f)
-    (vararg #f)
-    (kwonlyargs foo)
-    (kwonlyarg-types (Name int))
-    (kw_defaults (Name quux))
-    (kwarg #f)
-    (defaults #f)))
-  (body (Pass))
-  (decorator_list)
-  (returns #f))
- (FunctionDef
   (name _16)
   (args
    (Arguments
     (args a)
     (arg-types #f)
-    (vararg rax (Name baz))
+    (vararg #f)
     (kwonlyargs foo)
     (kwonlyarg-types (Name int))
     (kw_defaults (Name quux))
@@ -261,9 +246,9 @@
     (args a)
     (arg-types #f)
     (vararg rax (Name baz))
-    (kwonlyargs foo d e g)
-    (kwonlyarg-types (Name int) #f #f (Name str))
-    (kw_defaults (Name quux) #f (Name f) #f)
+    (kwonlyargs foo)
+    (kwonlyarg-types (Name int))
+    (kw_defaults (Name quux))
     (kwarg #f)
     (defaults #f)))
   (body (Pass))
@@ -279,7 +264,7 @@
     (kwonlyargs foo d e g)
     (kwonlyarg-types (Name int) #f #f (Name str))
     (kw_defaults (Name quux) #f (Name f) #f)
-    (kwarg blah)
+    (kwarg #f)
     (defaults #f)))
   (body (Pass))
   (decorator_list)
@@ -294,13 +279,28 @@
     (kwonlyargs foo d e g)
     (kwonlyarg-types (Name int) #f #f (Name str))
     (kw_defaults (Name quux) #f (Name f) #f)
-    (kwarg blah (Name int))
+    (kwarg blah)
     (defaults #f)))
   (body (Pass))
   (decorator_list)
   (returns #f))
  (FunctionDef
   (name _20)
+  (args
+   (Arguments
+    (args a)
+    (arg-types #f)
+    (vararg rax (Name baz))
+    (kwonlyargs foo d e g)
+    (kwonlyarg-types (Name int) #f #f (Name str))
+    (kw_defaults (Name quux) #f (Name f) #f)
+    (kwarg blah (Name int))
+    (defaults #f)))
+  (body (Pass))
+  (decorator_list)
+  (returns #f))
+ (FunctionDef
+  (name _21)
   (args
    (Arguments
     (args a)
@@ -315,7 +315,7 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _21)
+  (name _22)
   (args
    (Arguments
     (args a)
@@ -330,7 +330,7 @@
   (decorator_list)
   (returns #f))
  (FunctionDef
-  (name _22)
+  (name _23)
   (args
    (Arguments
     (args)
@@ -543,6 +543,21 @@
   (name _34)
   (args
    (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Pass))
+  (decorator_list)
+  (returns (Name int)))
+ (FunctionDef
+  (name _35)
+  (args
+   (Arguments
     (args a d b e)
     (arg-types #f (Name int) #f (Name int))
     (vararg g (Name int))
@@ -580,18 +595,18 @@
       Add
       (Name q)))))
   (decorator_list
-   (Name _34d1)
-   (Attribute (Attribute (Attribute (Name _34d2) a) b) c)
+   (Name _35d1)
+   (Attribute (Attribute (Attribute (Name _35d2) a) b) c)
    (Call
-    (func (Name _34d3))
+    (func (Name _35d3))
     (args (Name a))
     (keywords)
     (starargs #f)
     (kwargs #f))
    (Call
-    (func (Attribute (Attribute (Attribute (Name _34d4) a) b) c))
+    (func (Attribute (Attribute (Attribute (Name _35d4) a) b) c))
     (args (Name a) (Name d))
     (keywords (b (Name c)) (e (Name f)) (h (Name i)) (j (Name k)))
     (starargs (Name g))
     (kwargs (Name n))))
-  (returns #f)))
+  (returns (Name int))))
