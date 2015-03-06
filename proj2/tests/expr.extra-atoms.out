@@ -1,0 +1,12 @@
+(Module
+ (Expr (Num 10))
+ (Expr (Num 10.1))
+ (Expr (Str "hello"))
+ (Expr (Bytes #"hello"))
+ (Expr (NameConstant True))
+ (Expr (NameConstant False))
+ (Expr (NameConstant None))
+ (Expr (Ellipsis))
+ (Expr (Name Ellipsis))
+ (Expr (Attribute (Attribute (Name a) b) c))
+ (Expr (Attribute (Attribute (BinOp (Name a) Add (Num 10)) b) c)))
