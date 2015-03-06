@@ -1,0 +1,106 @@
+(Module
+ (Expr (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args)
+   (keywords (a (Num 10)))
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a) (Name b))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a))
+   (keywords (b (Num 10)))
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args)
+   (keywords (a (Num 10)) (b (Num 10)))
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a) (Name b) (Name c))
+   (keywords)
+   (starargs (Name d))
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a) (Name b) (Name c))
+   (keywords (e (Num 10)))
+   (starargs (Name d))
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a) (Name b))
+   (keywords (c (Num 10)))
+   (starargs (Name d))
+   (kwargs (Name kw))))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args (Name a) (Name b))
+   (keywords (c (Num 10)) (e (Num 10)))
+   (starargs (Name d))
+   (kwargs (Name kw))))
+ (Expr
+  (Call
+   (func (Name foo))
+   (args)
+   (keywords (c (Num 10)) (d (Num 20)))
+   (starargs (Name d))
+   (kwargs (Name kw))))
+ (Expr
+  (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs (Name kw))))
+ (Expr
+  (Call
+   (func
+    (Call
+     (func
+      (Call
+       (func
+        (Call
+         (func (Name foo))
+         (args (Name a))
+         (keywords)
+         (starargs #f)
+         (kwargs #f)))
+       (args (Name b))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (args (Name c) (Name d))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (args)
+   (keywords (a (Num 10)))
+   (starargs #f)
+   (kwargs (Name kw)))))
