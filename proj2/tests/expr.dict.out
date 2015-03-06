@@ -1,0 +1,22 @@
+(Module
+ (Expr (Dict (keys (Name a)) (values (Name b))))
+ (Expr (Dict (keys (Name a)) (values (Name b))))
+ (Expr
+  (Dict (keys (Name a) (Name c) (Name e)) (values (Name b) (Name d) (Name f))))
+ (Expr
+  (Dict (keys (Num 1) (Num 3) (Num 5)) (values (Num 2) (Num 4) (Str "hello"))))
+ (Expr
+  (DictComp
+   (Name x)
+   (Name x)
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name range))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if
+    (UnaryOp Not (Compare (left (Name x)) (ops Eq) (comparators (Num 5))))))))
