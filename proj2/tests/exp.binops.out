@@ -1,0 +1,56 @@
+(Module
+ (Expr (BinOp (Name a) BitOr (Name b)))
+ (Expr (BinOp (Name a) BitXor (Name b)))
+ (Expr (BinOp (Name a) BitAnd (Name b)))
+ (Expr (BinOp (BinOp (Name a) LShift (Name b)) LShift (Name c)))
+ (Expr (BinOp (BinOp (Name a) LShift (Name b)) RShift (Name c)))
+ (Expr (BinOp (BinOp (Name a) RShift (Name b)) LShift (Name c)))
+ (Expr (BinOp (BinOp (Name a) RShift (Name b)) RShift (Name c)))
+ (Expr (BinOp (BinOp (Name a) Add (Name b)) Add (Name c)))
+ (Expr (BinOp (BinOp (Name a) Add (Name b)) Sub (Name c)))
+ (Expr (BinOp (BinOp (Name a) Sub (Name b)) Add (Name c)))
+ (Expr (BinOp (BinOp (Name a) Sub (Name b)) Sub (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mult (Name b)) Mult (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mult (Name b)) Div (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mult (Name b)) Mod (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mult (Name b)) FloorDiv (Name c)))
+ (Expr (BinOp (BinOp (Name a) Div (Name b)) Mult (Name c)))
+ (Expr (BinOp (BinOp (Name a) Div (Name b)) Div (Name c)))
+ (Expr (BinOp (BinOp (Name a) Div (Name b)) Mod (Name c)))
+ (Expr (BinOp (BinOp (Name a) Div (Name b)) FloorDiv (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mod (Name b)) Mult (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mod (Name b)) Div (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mod (Name b)) Mod (Name c)))
+ (Expr (BinOp (BinOp (Name a) Mod (Name b)) FloorDiv (Name c)))
+ (Expr (BinOp (BinOp (Name a) FloorDiv (Name b)) Mult (Name c)))
+ (Expr (BinOp (BinOp (Name a) FloorDiv (Name b)) Div (Name c)))
+ (Expr (BinOp (BinOp (Name a) FloorDiv (Name b)) Mod (Name c)))
+ (Expr (BinOp (BinOp (Name a) FloorDiv (Name b)) FloorDiv (Name c)))
+ (Expr (UnaryOp UAdd (Name a)))
+ (Expr (UnaryOp USub (Name a)))
+ (Expr (UnaryOp Invert (Name a)))
+ (Expr (UnaryOp UAdd (BinOp (Name a) Pow (Num 3))))
+ (Expr (UnaryOp USub (BinOp (Name a) Pow (UnaryOp Invert (Name b)))))
+ (Expr
+  (BinOp
+   (BinOp
+    (BinOp
+     (BinOp
+      (BinOp (Name a) Add (Name b))
+      Sub
+      (BinOp
+       (Name c)
+       Mult
+       (BinOp
+        (BinOp (Num 3) FloorDiv (Name a))
+        Add
+        (BinOp (BinOp (Num 3) BitOr (Name b)) BitOr (Name c)))))
+     BitAnd
+     (BinOp
+      (BinOp (BinOp (Num 2) Add (Num 3)) Add (UnaryOp UAdd (Name a)))
+      Sub
+      (BinOp (UnaryOp Invert (Name a)) Mod (Name foo))))
+    LShift
+    (BinOp (BinOp (Num 3) Mult (Name a)) Add (BinOp (Name b) LShift (Num 3))))
+   BitXor
+   (BinOp (Num 256) BitOr (Num 16)))))
