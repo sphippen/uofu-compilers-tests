@@ -3,4 +3,5 @@
  (Expr (Yield (Tuple (Num 3))))
  (Expr (Yield (Tuple (Num 3) (Num 4) (Num 5))))
  (Expr (Yield (Tuple (Num 3) (Num 4) (Num 5))))
- (Expr (YieldFrom (Name foo))))
+ (Expr (YieldFrom (Name foo)))
+ (Expr (YieldFrom (List (Num 1) (Num 2) (Num 3)))))
