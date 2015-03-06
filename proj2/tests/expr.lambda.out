@@ -1,0 +1,601 @@
+(Module
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults))
+   (Num 1)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f))
+   (Name x)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f))
+   (Name x)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name x)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f #f))
+   (BinOp (Name x) Add (BinOp (Name y) Div (Name z)))))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f (Num 10)))
+   (BinOp (Name x) Add (BinOp (Name y) Div (Name z)))))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg #f)
+    (defaults #f))
+   (Name x)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 3) #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 3))
+    (kwarg #f)
+    (defaults #f))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg foo)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 18))
+    (kwarg #f)
+    (defaults #f #f (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg foo)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg foo)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg rest)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 10)))
+   (Name rest)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg foo)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 20))
+    (kwarg rest)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 10)))
+   (Name rest)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg #f)
+    (defaults #f))
+   (Name x)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 3) #f)
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) (Num 3))
+    (kwarg #f)
+    (defaults (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 3))
+    (kwarg #f)
+    (defaults #f))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 18))
+    (kwarg #f)
+    (defaults #f #f (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 1)))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg rest)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 10)))
+   (Name rest)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y z)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 20))
+    (kwarg rest)
+    (defaults #f (BinOp (Num 2) Add (Num 3)) (Num 10)))
+   (Name rest)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 20))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) (Num 10))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 4))
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg z)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) #f)
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 20))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults (Num 10) (Num 10))
+    (kwarg #f)
+    (defaults))
+   (Name a)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f (Num 4))
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a b)
+    (kwonlyarg-types #f #f)
+    (kw_defaults #f #f)
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs a)
+    (kwonlyarg-types #f)
+    (kw_defaults (Num 10))
+    (kwarg rest)
+    (defaults))
+   (Num 2)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg rest)
+    (defaults))
+   (Num 3)))
+ (Expr
+  (Lambda
+   (Arguments
+    (args x y)
+    (arg-types #f #f)
+    (vararg z)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults (Num 3) (Num 4)))
+   (Num 0))))
