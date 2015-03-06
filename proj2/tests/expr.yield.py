@@ -1,0 +1,5 @@
+(yield 3)
+(yield 3,)
+(yield 3,4,5)
+(yield 3,4,5,)
+(yield from foo)

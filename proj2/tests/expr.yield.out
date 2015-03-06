@@ -1,0 +1,6 @@
+(Module
+ (Expr (Yield (Num 3)))
+ (Expr (Yield (Tuple (Num 3))))
+ (Expr (Yield (Tuple (Num 3) (Num 4) (Num 5))))
+ (Expr (Yield (Tuple (Num 3) (Num 4) (Num 5))))
+ (Expr (YieldFrom (Name foo))))
