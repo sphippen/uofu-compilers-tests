@@ -53,4 +53,19 @@
      (keywords)
      (starargs #f)
      (kwargs #f))
-    (Index (Num 21))))))
+    (Index (Num 21)))))
+ (Assign
+  (targets (Tuple (Name a) (Name b)) (Starred (Name c)) (Name d))
+  (value (Num 3)))
+ (Assign
+  (targets
+   (Starred (Name c))
+   (Tuple (Name a) (Name b))
+   (Tuple (Name c) (Name d) (Name e)))
+  (value (Num 10)))
+ (Assign
+  (targets (Name a))
+  (value (Tuple (BoolOp Or (Name b) (Name c)) (BoolOp Or (Name d) (Name e)))))
+ (Assign
+  (targets (Tuple (Name a) (Name b)) (Name c) (Name d))
+  (value (Tuple (BoolOp Or (Name e) (Name f)) (BoolOp Or (Name g) (Name h))))))

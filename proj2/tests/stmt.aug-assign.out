@@ -20,4 +20,11 @@
  (AugAssign (Name a) Div (BinOp (Name b) Add (Name q)))
  (AugAssign (Name a) Mod (BinOp (Name b) BitOr (Num 1)))
  (AugAssign (Name a) BitAnd (BinOp (Name b) BitXor (Name foo)))
- (AugAssign (Name a) BitOr (BinOp (Name b) BitAnd (Name bar))))
+ (AugAssign (Name a) BitOr (BinOp (Name b) BitAnd (Name bar)))
+ (AugAssign (Name a) Add (Tuple (Name b)))
+ (AugAssign (Name a) Add (Tuple (Name b) (Name c)))
+ (AugAssign
+  (Name a)
+  Add
+  (Tuple (Name b) (Name c) (Name d) (Name e) (Name f) (Name g)))
+ (AugAssign (Name a) Pow (Tuple (Num 3) (Num 2))))
