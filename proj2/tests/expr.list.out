@@ -29,6 +29,7 @@
  (Expr (Subscript (Name a) (Slice #f (Name b) #f)))
  (Expr (Subscript (Name a) (Slice (Name b) #f #f)))
  (Expr (Subscript (Name a) (Slice #f #f (Name b))))
+ (Expr (Subscript (Name a) (ExtSlice (Slice #f (Name b) #f))))
  (Expr (Subscript (Name a) (Slice (Name b) #f #f)))
  (Expr (Subscript (Name a) (Slice (Name b) (Name c) #f)))
  (Expr (Subscript (Name a) (Slice (Name b) (Name c) #f)))
