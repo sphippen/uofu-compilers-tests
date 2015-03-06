@@ -1,0 +1,49 @@
+(Module
+ (Expr (BoolOp Or (Name a) (Name b)))
+ (Expr (BoolOp And (Name a) (Name b)))
+ (Expr (BoolOp Or (Name a) (BoolOp And (Name b) (Name c))))
+ (Expr (BoolOp Or (Name a) (BoolOp And (Name b) (UnaryOp Not (Name c)))))
+ (Expr (BoolOp Or (UnaryOp Not (Name a)) (BoolOp And (Name b) (Name c))))
+ (Expr
+  (BoolOp
+   Or
+   (Name a)
+   (Compare (left (Name b)) (ops Gt Eq) (comparators (Name c) (Name d)))))
+ (Expr
+  (BoolOp
+   Or
+   (Compare (left (Name a)) (ops Eq) (comparators (Name c)))
+   (Compare (left (Name d)) (ops Eq) (comparators (Name e)))))
+ (Expr
+  (BoolOp
+   Or
+   (Compare (left (Name a)) (ops GtE) (comparators (Name c)))
+   (Compare
+    (left (Name d))
+    (ops NotIn)
+    (comparators
+     (IfExp
+      (Compare (left (Name e)) (ops Eq) (comparators (Name f)))
+      (List (Num 1) (Num 2))
+      (List (Num 3) (Num 4)))))))
+ (Expr (Compare (left (Name c)) (ops Lt) (comparators (Name d))))
+ (Expr
+  (BoolOp
+   Or
+   (Compare (left (Name a)) (ops LtE) (comparators (Name d)))
+   (Compare (left (Name a)) (ops LtE) (comparators (Name f)))))
+ (Expr
+  (Compare
+   (left (Name a))
+   (ops NotEq)
+   (comparators (BoolOp Or (Name b) (Name d)))))
+ (Expr
+  (Compare
+   (left (Name c))
+   (ops In)
+   (comparators (Yield (Tuple (Num 3) (Num 4) (Num 5))))))
+ (Expr
+  (BoolOp
+   Or
+   (Compare (left (Name a)) (ops IsNot) (comparators (Name d)))
+   (Compare (left (Name c)) (ops Eq) (comparators (Name d))))))
