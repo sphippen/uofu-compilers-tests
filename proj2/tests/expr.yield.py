@@ -1,3 +1,4 @@
+(yield)
 (yield 3)
 (yield 3,)
 (yield 3,4,5)

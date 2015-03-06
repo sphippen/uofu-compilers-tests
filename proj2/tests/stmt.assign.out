@@ -29,4 +29,28 @@
     (Starred (Name foo))
     (Starred (Name x))))
   (value (Num 12)))
- (Assign (targets (Starred (Name _))) (value (Num 12))))
+ (Assign (targets (Starred (Name _))) (value (Num 12)))
+ (Assign (targets (Name a) (Name b)) (value (Num 3)))
+ (Assign
+  (targets (Name a) (Starred (Name b)) (Name c))
+  (value (BinOp (Num 3) Mult (Name x))))
+ (Assign
+  (targets
+   (Name a)
+   (Starred (Name b))
+   (Name c)
+   (Name d)
+   (Starred (Name f))
+   (Name e))
+  (value (Num 10)))
+ (Assign
+  (targets (Starred (Name a)) (Name b))
+  (value
+   (Subscript
+    (Call
+     (func (Name foo))
+     (args (Num 3))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    (Index (Num 21))))))
