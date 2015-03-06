@@ -1,0 +1,70 @@
+(Module
+ (Expr (List (Name a)))
+ (Expr (List (Name a)))
+ (Expr (List (Name a) (Name b) (Name c) (Name d)))
+ (Expr (List (Name a) (Name b) (Name c) (Name d)))
+ (Expr (List (Num 1) (Num 2) (Num 3) (Num 4) (Num 5)))
+ (Expr
+  (ListComp
+   (Name x)
+   (for
+    (Name x)
+    in
+    (Call
+     (func (Name range))
+     (args (Num 10))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    if)))
+ (Expr (List (Name a) (Starred (Name b)) (Name c) (Name q)))
+ (Expr (Subscript (Name a) (Index (Name b))))
+ (Expr (Subscript (Name a) (Index (Tuple (Name b)))))
+ (Expr
+  (Subscript (Name a) (Index (Tuple (Name b) (Name d) (Name e) (Name f)))))
+ (Expr
+  (Subscript (Name a) (Index (Tuple (Name b) (Name d) (Name e) (Name f)))))
+ (Expr (Subscript (Name a) (Slice #f #f #f)))
+ (Expr (Subscript (Name a) (Slice #f #f #f)))
+ (Expr (Subscript (Name a) (Slice #f (Name b) #f)))
+ (Expr (Subscript (Name a) (Slice (Name b) #f #f)))
+ (Expr (Subscript (Name a) (Slice #f #f (Name b))))
+ (Expr (Subscript (Name a) (Slice (Name b) #f #f)))
+ (Expr (Subscript (Name a) (Slice (Name b) (Name c) #f)))
+ (Expr (Subscript (Name a) (Slice (Name b) (Name c) #f)))
+ (Expr (Subscript (Name a) (Slice (Name b) (Name c) (Name d))))
+ (Expr
+  (Subscript
+   (Name a)
+   (ExtSlice
+    (Index (Name b))
+    (Slice (Name c) #f #f)
+    (Slice (Name d) (Name e) #f)
+    (Slice (Name f) (Name g) #f)
+    (Slice (Name h) (Name i) (Name j)))))
+ (Expr
+  (Subscript
+   (Name a)
+   (ExtSlice
+    (Index (Name b))
+    (Slice (Name c) #f #f)
+    (Slice (Name d) (Name e) #f)
+    (Slice (Name f) (Name g) #f)
+    (Slice (Name h) (Name i) (Name j)))))
+ (Expr
+  (Subscript
+   (Name a)
+   (ExtSlice
+    (Slice #f #f (Name b))
+    (Slice (Name b) #f #f)
+    (Slice #f (Name b) #f))))
+ (Expr
+  (Subscript
+   (Attribute (Name a) b)
+   (Index
+    (Tuple
+     (Subscript (Name q) (Slice #f #f (Name b)))
+     (Subscript (Name t) (ExtSlice (Slice #f (Name c) #f) (Index (Name x))))
+     (Subscript
+      (Name m)
+      (ExtSlice (Slice (Name foo) #f #f) (Index (Name foo)))))))))
