@@ -8,4 +8,6 @@
  (ImportFrom (module #f) (names (a #f) (b #f) (c #f)) (level 1))
  (ImportFrom (module #f) (names (a #f)) (level 5))
  (ImportFrom (module a.b.c) (names (rax #f)) (level 1))
- (ImportFrom (module a.b.c) (names (qq #f)) (level 4)))
+ (ImportFrom (module a.b.c) (names (qq #f)) (level 4))
+ (ImportFrom (module a.b.c) (names (rax b) (foo bar)) (level 0))
+ (ImportFrom (module a) (names (b c) (foo bar)) (level 0)))
