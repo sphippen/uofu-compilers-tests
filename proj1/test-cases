@@ -2,10 +2,10 @@
 #lang racket
 
 (require racket/cmdline)
-(require "lib/proc.rkt")
-(require "lib/common.rkt")
-(require "lib/term-colors.rkt")
-(require "lib/diff.rkt")
+(require "../lib/proc.rkt")
+(require "../lib/common.rkt")
+(require "../lib/term-colors.rkt")
+(require "../lib/list-diff.rkt")
 
 (define (file-split f)
  (let* ([file (file-name-from-path f)]
