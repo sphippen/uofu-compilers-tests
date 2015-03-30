@@ -1,0 +1,25 @@
+(Module
+ (FunctionDef
+  (name f)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Return (NameConstant None)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name f) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets (Attribute (Name f) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __kwdefaults__))
+  (value (NameConstant None))))

@@ -1,0 +1,267 @@
+#! /usr/bin/env racket
+#lang racket
+
+(require racket/cmdline)
+(require racket/pretty)
+(require "../lib/proc.rkt")
+(require "../lib/common.rkt")
+(require "../lib/term-colors.rkt")
+(require "../lib/diff.rkt")
+
+(define (file-split f)
+ (let* ([file (file-name-from-path f)]
+        [ext  (bytes->string/utf-8 (filename-extension file))])
+  (let* ([file-string (path->string file)]
+         [file-len    (string-length file-string)])
+   (list (substring file-string 
+                    0 (- file-len (+ 1 (string-length ext))))
+         ext))))
+
+(define (path/py? f)
+ (match-let ([(list file-name ext) 
+              (file-split f)])
+  (string=? "py" ext)))
+
+(define (name-for-test-file f)
+ (car (file-split f)))
+
+(define (test-for-name dir name)
+ (let ([input   (build-path dir (string-append name ".py"))]
+       [output (build-path dir (string-append name ".out"))])
+  (cond 
+   [(file-exists? output)  `(,input (matches-file ,output))]
+   [else                   `(,input fails)])))
+
+(define (tests-in-dir dir)
+ (map (curry test-for-name dir) 
+      (map name-for-test-file
+           (filter path/py? 
+                   (directory-list dir #:build? #t)))))
+
+(define (valid-binary? b)
+ (and (file-exists? b)
+      (in? 'execute (file-or-directory-permissions b))))
+
+(define error-msg (lambda lines
+ (define *error* (color "ERROR" 'red))
+ (define *lead-space* 
+  (make-string (+ 2 (string-length "ERROR")) #\space))
+ (eprintf "~a: ~a\n" *error*
+          (string-join lines (string-append "\n" *lead-space*)))))
+
+(define parse-args
+ (let ([no-diff? (make-parameter #f)])
+  (command-line 
+   #:program "test-cases"
+   #:once-any
+   ["--no-diff"    ("Don't use the unix diff utility, just print out the "
+                    "expected and received outputs.")
+                   (no-diff? #t)]
+   #:args (pylex pyparse bin test-dir)
+   (thunk* 
+    (unless (no-diff?)
+     (when (not (find-executable-path "diff"))
+           (error-msg "Couldn't find diff utility. Add it to the path"
+                      "or use the --no-diff option.")
+           (exit 1)))
+    (let ([test-dir-path (fix-path test-dir)]
+          [bin-path      (fix-path bin)]
+          [pyparse-path  (fix-path pyparse)]
+          [pylex-path    (fix-path pylex)])
+         (unless (directory-exists? test-dir-path)
+                 (eprintf "Test directory \"~a\" doesn't exist.\n" 
+                          (path->string test-dir-path))
+                 (exit 1))
+         (unless (valid-binary? pylex-path) 
+                 (error-msg 
+                  (format "pylex binary \"~a\" does not exist or is not executable.\n"
+                  (path->string pylex-path)))
+                 (exit 1))
+         (unless (valid-binary? pyparse-path) 
+           (error-msg
+            (format "pyparse binary \"~a\" does not exist or is not executable.\n"
+                    (path->string pyparse-path)))
+           (exit 1))
+         (unless (valid-binary? bin-path) 
+                 (error-msg
+                  (format "pydesugar1 binary \"~a\" does not exist or is not executable.\n"
+                  (path->string bin-path)))
+                 (exit 1))
+         (list (no-diff?) pylex-path pyparse-path bin-path (tests-in-dir test-dir-path)))))))
+
+(define (list-split l on [cur '()])
+ (cond
+  [(and (null? l) 
+        (not (null? cur)))  (list cur)]
+  [(null? l)                cur]
+  [else
+   (let ([first (car l)] [rest (cdr l)])
+        (if (eqv? first on)
+            (cons cur (list-split rest on))
+            (list-split rest on (cons first cur))))]))
+
+(define (bytes-split bts [on (char->integer #\newline)])
+ (map (lambda (bs) (apply bytes (reverse bs)))
+      (list-split (bytes->list bts) on)))
+
+(define (file->bytes f)
+ (let ([p (open-input-file f)])
+  (begin0 (port->bytes p)
+          (close-input-port p))))
+
+(define (file->sexp f)
+ (let ([p (open-input-file f)])
+  (begin0 (port->list read p)
+          (close-input-port p))))
+
+(define (bytes->sexp b)
+ (let ([p (open-input-bytes b)])
+  (begin0 (port->list read p)
+          (close-input-port p))))
+
+(define (matches?/fails proc) 
+ (list (not (= (hash-ref proc 'status) 0)) 'nothing))
+
+(define (matches?/file proc file)
+ (let ([expected-sexp  (file->sexp file)])
+  (list (with-handlers ([exn:fail:read?  (thunk* #f)])
+           (equal? expected-sexp 
+                   (bytes->sexp (hash-ref proc 'stdout))))
+    expected-sexp)))
+
+(struct exn:fail:timeout exn:fail (timeout)
+    #:extra-constructor-name make-exn:fail:timeout
+    #:transparent)
+
+(define-syntax-rule (begin/timeout timeout body ...)
+ (let* ([ch     (make-channel)])
+  (thread 
+   (thunk (channel-put ch
+           (with-handlers ([(thunk* #t) (lambda (x) (list 'error x))])
+            (list 'success (begin body ...))))))
+  (match (sync/timeout timeout ch)
+   [#f              (raise (make-exn:fail:timeout 
+                            (format "Timeout after ~a s" timeout)
+                            (current-continuation-marks)
+                            timeout))]
+   [`(error ,what)  (raise what)]
+   [`(success ,r)   r])))
+
+(define (bin-proc-for-input pylex pyparse bin in [timeout 15])
+ (begin/timeout timeout
+  (let ([lex-proc (run pylex #:input in)])
+   (if (not (= (hash-ref lex-proc 'status) 0))
+       (raise 'pylex-exit)
+       (let ([lex-input (open-input-bytes (hash-ref lex-proc 'stdout))])
+         (let ([par-proc (run pyparse #:input lex-input)])
+           (begin
+             (close-input-port lex-input)
+             (if (not (= (hash-ref par-proc 'status) 0))
+                 (raise 'pyparse-exit)
+                 (let ([par-input (open-input-bytes
+                                   (hash-ref par-proc 'stdout))])
+                   (begin0 (run bin #:input par-input)
+			   (close-input-port par-input)))))))))))
+
+(define (check-case pylex pyparse bin case)
+ (match-let* ([(list input output) case]
+              [input-port          (open-input-file input)]
+              [proc                (bin-proc-for-input pylex pyparse bin
+                                                       input-port)])
+  (close-input-port input-port)
+  (cons proc 
+   (match output
+         ['fails                 (matches?/fails proc)]
+         [`(matches-file ,file)  (matches?/file proc file)]))))
+
+(define *failure* (color "FAILURE" 'red))
+(define *success* (color "SUCCESS" 'green))
+(define *stderr*  (color "stderr" 'white))
+(define *exit* (color "exit" 'white))
+(define *expected* (color "expected" 'white))
+(define *got*      (color "got" 'white))
+(define *diff*     (color "diff" 'white))
+
+; ---> Exceptional Errors
+(define *not-sexp* (color "Not an S-Expression" 'yellow))
+(define *nothing* (color "Nothing" 'yellow))
+
+(define (sexp->bytes s)
+ (string->bytes/utf-8
+  (pretty-format s)))
+
+(define (formatted-bytes b)
+ (if (bytes=? b #"")
+     (list #t #"")
+     (with-handlers ([exn:fail:read? (thunk* (list #f b))])
+      (list #t (sexp->bytes (bytes->sexp b))))))
+
+(define (display-maybe-nothing-bytes b)
+ (if (bytes=? b #"")
+     (displayln *nothing*) 
+     (begin (newline) (displayln b))))
+
+(define (run-test-case diff? pylex pyparse bin case)
+ (match-let ([case-name                         (car (file-split (car case)))]
+             [(list proc passes? expected) (check-case pylex pyparse bin case)])
+  (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
+  (when (not passes?)
+   (printf " ~a -> ~a\n" *exit* 
+    (let* ([code   (hash-ref proc 'status)]
+           [code/s (format "~a" code)])
+     (if (= code 0) (color code/s 'green)
+                    (color code/s 'red))))
+   (printf " ~a -> " *stderr*)
+   (display-maybe-nothing-bytes (hash-ref proc 'stderr))
+   (match-let ([(list could-format? formatted-stdout) 
+                (formatted-bytes (hash-ref proc 'stdout))])
+    (if (and diff? could-format? (not (eq? expected 'nothing))
+                                 (not (bytes=? formatted-stdout #"")))
+        (begin (printf " ~a ->\n" *diff*)
+               (display (diff/bytes (sexp->bytes expected) formatted-stdout)))
+        (begin (printf " ~a -> " *expected*)
+               (display-maybe-nothing-bytes 
+                (if (eq? expected 'nothing) #"" (sexp->bytes expected)))
+               (printf " ~a -> " *got*)
+               ; could-format? is never true when stdout is empty
+               (when (not could-format?) (display *not-sexp*))
+               (display-maybe-nothing-bytes formatted-stdout)))))
+  passes?))
+
+(define (run-test-case/safe diff? pylex pyparse bin case)
+ (define (sym-handler sym)
+  (match sym
+   ['pylex-exit (error-msg "pylex exited with a non-zero status. You may want "
+                           "to try using the reference pylex. The readme "
+                           "(http://git.io/x5Zu) describes how to use the "
+                           "reference pylex.")
+                (exit 1)]
+   ['pyparse-exit (error-msg "pyparse exited with a non-zero status. You may "
+                             "want "
+                             "to try using the reference pyparse. The readme "
+                             "(http://git.io/x5Zu) describes how to use the "
+                             "reference pyparse.")
+                (exit 1)]
+   [e   (error e)]))
+ (with-handlers ([symbol? sym-handler]
+                 [exn:fail:timeout?
+                  (thunk*
+                   (error-msg "pyparse (or pylex) didn't exit after 15 seconds."
+                              "This is likely because of an infinite loop bug "
+                              "in pyparse.")
+                   (exit 1))])
+   (run-test-case diff? pylex pyparse bin case)))
+
+(print-as-expression #f)
+(match-let ([(list no-diff? pylex pyparse bin cases)
+             (parse-args (current-command-line-arguments))])
+ (let* ([results (map (curry run-test-case/safe
+                             (not no-diff?) pylex pyparse bin) cases)]
+        [case-count (length cases)]
+        [fail-count (count not results)])
+  (if (= 0 fail-count)
+      (displayln "All Passed")
+      (printf "~a/~a Failed" fail-count case-count))
+  (when (> fail-count 0) (exit 1))))
+
+;# vim: set syn=racket:
