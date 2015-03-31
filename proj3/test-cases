@@ -273,7 +273,7 @@
               [(list proc (list passed?/sexp sexp-rest ...)
                           (list passed?/python py-rest ...))
                (check-case python3 pylex pyparse sxpy bin case)]
-              [passes? (and passed?/sexp passed?/python)])
+              [passes? (and passed?/sexp passed?/python (proc-success? proc))])
   (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
   (when (not passes?)
    (display-proc-err "pydesugar1" proc)
