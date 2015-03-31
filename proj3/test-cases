@@ -7,6 +7,8 @@
 (require "../lib/common.rkt")
 (require "../lib/term-colors.rkt")
 (require "../lib/diff.rkt")
+(require "../lib/error.rkt")
+(require (prefix-in spec: "spec-check.rkt"))
 
 (define (file-split f)
  (let* ([file (file-name-from-path f)]
@@ -33,10 +35,7 @@
    [else                   `(,input fails)])))
 
 (define (tests-in-dir dir)
- (map (curry test-for-name dir) 
-      (map name-for-test-file
-           (filter path/py? 
-                   (directory-list dir #:build? #t)))))
+ (filter path/py? (directory-list dir #:build? #t)))
 
 (define (valid-binary? b)
  (and (file-exists? b)
@@ -49,6 +48,14 @@
  (eprintf "~a: ~a\n" *error*
           (string-join lines (string-append "\n" *lead-space*)))))
 
+(define (check-binary name path)
+ (unless (valid-binary? path) 
+  (error-msg 
+   (format "~a binary \"~a\" does not exist or is not executable.\n"
+           name
+           (path->string path)))
+  (exit 1)))
+
 (define parse-args
  (let ([no-diff? (make-parameter #f)])
   (command-line 
@@ -57,7 +64,7 @@
    ["--no-diff"    ("Don't use the unix diff utility, just print out the "
                     "expected and received outputs.")
                    (no-diff? #t)]
-   #:args (pylex pyparse bin test-dir)
+   #:args (pylex pyparse sxpy bin test-dir)
    (thunk* 
     (unless (no-diff?)
      (when (not (find-executable-path "diff"))
@@ -67,27 +74,23 @@
     (let ([test-dir-path (fix-path test-dir)]
           [bin-path      (fix-path bin)]
           [pyparse-path  (fix-path pyparse)]
-          [pylex-path    (fix-path pylex)])
+          [sxpy-path     (fix-path sxpy)]
+          [pylex-path    (fix-path pylex)]
+          [python3-path  (find-executable-path "python3")])
+         (when (not python3-path)
+               (error-msg "Couldn't find `python3` in your path.")
+               (exit 1))
          (unless (directory-exists? test-dir-path)
                  (eprintf "Test directory \"~a\" doesn't exist.\n" 
                           (path->string test-dir-path))
                  (exit 1))
-         (unless (valid-binary? pylex-path) 
-                 (error-msg 
-                  (format "pylex binary \"~a\" does not exist or is not executable.\n"
-                  (path->string pylex-path)))
-                 (exit 1))
-         (unless (valid-binary? pyparse-path) 
-           (error-msg
-            (format "pyparse binary \"~a\" does not exist or is not executable.\n"
-                    (path->string pyparse-path)))
-           (exit 1))
-         (unless (valid-binary? bin-path) 
-                 (error-msg
-                  (format "pydesugar1 binary \"~a\" does not exist or is not executable.\n"
-                  (path->string bin-path)))
-                 (exit 1))
-         (list (no-diff?) pylex-path pyparse-path bin-path (tests-in-dir test-dir-path)))))))
+         (check-binary "pylex" pylex-path)
+         (check-binary "pyparse" pyparse-path)
+         (check-binary "sxpy" sxpy-path)
+         (check-binary "pydesugar1" bin-path)
+         (list (no-diff?) python3-path
+               pylex-path pyparse-path sxpy-path bin-path 
+               (tests-in-dir test-dir-path)))))))
 
 (define (list-split l on [cur '()])
  (cond
@@ -119,33 +122,55 @@
   (begin0 (port->list read p)
           (close-input-port p))))
 
-(define (matches?/fails proc) 
- (list (not (= (hash-ref proc 'status) 0)) 'nothing))
+(define (formatted-bytes b)
+ (if (bytes=? b #"")
+     (list #t #"")
+     (with-handlers ([exn:fail:read? (thunk* (list #f b))])
+      (list #t (sexp->bytes (bytes->sexp b))))))
 
-(define (matches?/file proc file)
- (let ([expected-sexp  (file->sexp file)])
-  (list (with-handlers ([exn:fail:read?  (thunk* #f)])
-           (equal? expected-sexp 
-                   (bytes->sexp (hash-ref proc 'stdout))))
-    expected-sexp)))
+(define (sexp->bytes s)
+ (string->bytes/utf-8
+  (pretty-format s)))
 
-(struct exn:fail:timeout exn:fail (timeout)
-    #:extra-constructor-name make-exn:fail:timeout
-    #:transparent)
+(define (proc-success? p [success-code 0]) 
+ (= (hash-ref p 'status) success-code))
 
-(define-syntax-rule (begin/timeout timeout body ...)
- (let* ([ch     (make-channel)])
-  (thread 
-   (thunk (channel-put ch
-           (with-handlers ([(thunk* #t) (lambda (x) (list 'error x))])
-            (list 'success (begin body ...))))))
-  (match (sync/timeout timeout ch)
-   [#f              (raise (make-exn:fail:timeout 
-                            (format "Timeout after ~a s" timeout)
-                            (current-continuation-marks)
-                            timeout))]
-   [`(error ,what)  (raise what)]
-   [`(success ,r)   r])))
+(define (sexp-bytes->py-bytes sxpy b)
+ (let* ([sexp-out (open-input-bytes b)]
+        [proc     (run sxpy #:input sexp-out)])
+  (close-input-port sexp-out)
+  (when (not (proc-success? proc)) (raise 'sxpy-exit))
+  (hash-ref proc 'stdout)))
+
+(define (matches?/spec proc)
+ (with-handlers ([exn:fail:read? (thunk* '(#f unreadable))])
+  (match-let ([(list passed? edited)
+               (spec:in-spec?/edit (bytes->sexp (hash-ref proc 'stdout)))])
+   (list passed? 'good edited))))
+
+(define *matches-tmp-fmt* "matches-tmp.~a")
+(define (matches?/python python3 sxpy input proc [timeout 15])
+ (with-handlers ([(curry eq? 'sxpy-exit) (thunk* '(#f unreadable))])
+  (let* ([tmp-file (make-temporary-file *matches-tmp-fmt*)]
+         [tmp-out  (open-output-file tmp-file #:exists 'truncate)])
+   (write-bytes (sexp-bytes->py-bytes sxpy (hash-ref proc 'stdout)) tmp-out)
+   (close-output-port tmp-out)
+   (with-handlers 
+    ([exn:fail:timeout? 
+      (thunk* (error-msg "Your desugared python code failed to terminate before the "
+                         "timeout. This is likely because a desugaring error is "
+                         "causing an inifinte loop.")
+              (exit 1))])
+    (begin/timeout timeout
+     (let ([py-orig    (run python3 input)]
+           [py-after   (run python3 (path->string tmp-file))])
+      (list (and (proc-success? py-orig) 
+                 (proc-success? py-after)
+                 (bytes=? (hash-ref py-orig 'stdout)
+                          (hash-ref py-after 'stdout)))
+           'good 
+            py-orig
+            py-after)))))))
 
 (define (bin-proc-for-input pylex pyparse bin in [timeout 15])
  (begin/timeout timeout
@@ -163,16 +188,11 @@
                    (begin0 (run bin #:input par-input)
 			   (close-input-port par-input)))))))))))
 
-(define (check-case pylex pyparse bin case)
- (match-let* ([(list input output) case]
-              [input-port          (open-input-file input)]
-              [proc                (bin-proc-for-input pylex pyparse bin
-                                                       input-port)])
+(define (check-case python3 pylex pyparse sxpy bin case)
+ (let* ([input-port (open-input-file case)]
+        [proc       (bin-proc-for-input pylex pyparse bin input-port)])
   (close-input-port input-port)
-  (cons proc 
-   (match output
-         ['fails                 (matches?/fails proc)]
-         [`(matches-file ,file)  (matches?/file proc file)]))))
+  (list proc (matches?/spec proc) (matches?/python python3 sxpy case proc))))
 
 (define *failure* (color "FAILURE" 'red))
 (define *success* (color "SUCCESS" 'green))
@@ -181,54 +201,87 @@
 (define *expected* (color "expected" 'white))
 (define *got*      (color "got" 'white))
 (define *diff*     (color "diff" 'white))
+(define *check*    "test")
 
 ; ---> Exceptional Errors
 (define *not-sexp* (color "Not an S-Expression" 'yellow))
 (define *nothing* (color "Nothing" 'yellow))
-
-(define (sexp->bytes s)
- (string->bytes/utf-8
-  (pretty-format s)))
-
-(define (formatted-bytes b)
- (if (bytes=? b #"")
-     (list #t #"")
-     (with-handlers ([exn:fail:read? (thunk* (list #f b))])
-      (list #t (sexp->bytes (bytes->sexp b))))))
 
 (define (display-maybe-nothing-bytes b)
  (if (bytes=? b #"")
      (displayln *nothing*) 
      (begin (newline) (displayln b))))
 
-(define (run-test-case diff? pylex pyparse bin case)
- (match-let ([case-name                         (car (file-split (car case)))]
-             [(list proc passes? expected) (check-case pylex pyparse bin case)])
+(define (diff-maybe/bytes diff? ba bb)
+ (if (and diff? (not (and (bytes=? ba #"") (bytes=? bb #""))))
+     (begin (printf " ~a ->\n" *diff*)
+            (display (diff/bytes ba bb)))
+     (begin (printf " ~a -> " *expected*)
+            (display-maybe-nothing-bytes ba)
+            (printf " ~a -> " *got*)
+            (display-maybe-nothing-bytes bb))))
+
+(define (display-proc-err name proc)
+ (printf " ~a/~a -> ~a\n" name *exit* 
+   (let* ([code   (hash-ref proc 'status)]
+          [code/s (format "~a" code)])
+    (if (= code 0) (color code/s 'green)
+                   (color code/s 'red))))
+  (printf " ~a/~a -> " name *stderr*)
+  (display-maybe-nothing-bytes (hash-ref proc 'stderr)))
+
+(define (diff-maybe diff? proc sexp)
+ (match-let ([(list could-format? formatted-stdout) 
+              (formatted-bytes (hash-ref proc 'stdout))])
+  (if (and diff? could-format? (not (bytes=? formatted-stdout #"")))
+      (begin (printf " ~a ->\n" *diff*)
+             (display (diff/bytes (sexp->bytes sexp) formatted-stdout)))
+      (begin (printf " ~a -> " *expected*)
+             (display-maybe-nothing-bytes (sexp->bytes sexp))
+             (printf " ~a -> " *got*)
+             ; could-format? is never true when stdout is empty
+             (when (not could-format?) (display *not-sexp*))
+             (display-maybe-nothing-bytes formatted-stdout)))))
+
+(define (display-sexp-match diff? proc passed? payload)
+ (printf "    ~a: ~a\n" *check* 
+  (color "Is Modified AST" (if passed? 'green 'red)))
+ (when (not passed?)
+  (printf " ~a -> " (color "AST" 'white))
+  (match payload
+   ['(unreadable)
+    (displayln *not-sexp*)
+    (display-maybe-nothing-bytes (hash-ref proc 'stdout))]
+   [`(good ,edited) (newline) (diff-maybe diff? proc edited)])))
+
+(define (display-python-match diff? proc passed? payload)
+ (printf "    ~a: ~a\n" *check* 
+  (color "Pre/Post Output Equivalent" (if passed? 'green 'red)))
+ (when (not passed?)
+  (match payload
+   ['(unreadable)
+    (printf " ~a -> ~a\n" (color "output" 'white)
+                          (color "Not a valid AST S-Expression" 'yellow))
+    (display-maybe-nothing-bytes (hash-ref proc 'stdout))]
+   [`(good ,orig ,after)
+    (display-proc-err "original" orig)
+    (display-proc-err "desugared" after)
+    (diff-maybe/bytes diff? (hash-ref orig 'stdout) (hash-ref after 'stdout))])))
+
+(define (run-test-case diff? python3 pylex pyparse sxpy bin case)
+ (match-let* ([case-name  (car (file-split case))]
+              [(list proc (list passed?/sexp sexp-rest ...)
+                          (list passed?/python py-rest ...))
+               (check-case python3 pylex pyparse sxpy bin case)]
+              [passes? (and passed?/sexp passed?/python)])
   (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
   (when (not passes?)
-   (printf " ~a -> ~a\n" *exit* 
-    (let* ([code   (hash-ref proc 'status)]
-           [code/s (format "~a" code)])
-     (if (= code 0) (color code/s 'green)
-                    (color code/s 'red))))
-   (printf " ~a -> " *stderr*)
-   (display-maybe-nothing-bytes (hash-ref proc 'stderr))
-   (match-let ([(list could-format? formatted-stdout) 
-                (formatted-bytes (hash-ref proc 'stdout))])
-    (if (and diff? could-format? (not (eq? expected 'nothing))
-                                 (not (bytes=? formatted-stdout #"")))
-        (begin (printf " ~a ->\n" *diff*)
-               (display (diff/bytes (sexp->bytes expected) formatted-stdout)))
-        (begin (printf " ~a -> " *expected*)
-               (display-maybe-nothing-bytes 
-                (if (eq? expected 'nothing) #"" (sexp->bytes expected)))
-               (printf " ~a -> " *got*)
-               ; could-format? is never true when stdout is empty
-               (when (not could-format?) (display *not-sexp*))
-               (display-maybe-nothing-bytes formatted-stdout)))))
+   (display-proc-err "pydesugar1" proc)
+   (display-sexp-match diff? proc passed?/sexp sexp-rest)
+   (display-python-match diff? proc passed?/python py-rest))
   passes?))
 
-(define (run-test-case/safe diff? pylex pyparse bin case)
+(define (run-test-case/safe diff? python3 pylex pyparse sxpy bin case)
  (define (sym-handler sym)
   (match sym
    ['pylex-exit (error-msg "pylex exited with a non-zero status. You may want "
@@ -242,21 +295,26 @@
                              "(http://git.io/x5Zu) describes how to use the "
                              "reference pyparse.")
                 (exit 1)]
+   ['sxpy-exit    (error-msg "sxpy exited with a non-zero status. This should "
+                             "never happen. Please mail the class mailing list or "
+                             "josh@kunz.xyz with details.")
+                (exit 1)]
    [e   (error e)]))
  (with-handlers ([symbol? sym-handler]
                  [exn:fail:timeout?
                   (thunk*
-                   (error-msg "pyparse (or pylex) didn't exit after 15 seconds."
-                              "This is likely because of an infinite loop bug "
-                              "in pyparse.")
+                   (error-msg "pydesugar1, pyparse, or pylex didn't exit after "
+                              "15 seconds. This is likely because of an infinite "
+                              "loop bug in pydesugar1.")
                    (exit 1))])
-   (run-test-case diff? pylex pyparse bin case)))
+   (run-test-case diff? python3 pylex pyparse sxpy bin case)))
 
+;Make sure we use `write` for pretty print
 (print-as-expression #f)
-(match-let ([(list no-diff? pylex pyparse bin cases)
+(match-let ([(list no-diff? python3 pylex pyparse sxpy bin cases)
              (parse-args (current-command-line-arguments))])
  (let* ([results (map (curry run-test-case/safe
-                             (not no-diff?) pylex pyparse bin) cases)]
+                             (not no-diff?) python3 pylex pyparse sxpy bin) cases)]
         [case-count (length cases)]
         [fail-count (count not results)])
   (if (= 0 fail-count)
