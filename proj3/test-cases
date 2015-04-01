@@ -317,7 +317,7 @@
         [fail-count (count not results)])
   (if (= 0 fail-count)
       (displayln "All Passed")
-      (printf "~a/~a Failed" fail-count case-count))
+      (printf "~a/~a Failed\n" fail-count case-count))
   (when (> fail-count 0) (exit 1))))
 
 ;# vim: set syn=racket:
