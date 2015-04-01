@@ -71,5 +71,7 @@
    [else (list #t else)]))
 
 (define (in-spec?/edit tree) 
- (match-let ([(list in? module) (in-spec?-module/edit (car tree))])
-  (list in? (list module))))
+ (if (not (null? tree))
+     (match-let ([(list in? module) (in-spec?-module/edit (car tree))])
+      (list in? (list module)))
+     '(#f ())))
