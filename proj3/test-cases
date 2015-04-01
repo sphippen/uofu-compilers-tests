@@ -148,13 +148,10 @@
                (spec:in-spec?/edit (bytes->sexp (hash-ref proc 'stdout)))])
    (list passed? 'good edited))))
 
-(define *matches-tmp-fmt* "matches-tmp.~a")
 (define (matches?/python python3 sxpy input proc [timeout 15])
  (with-handlers ([(curry eq? 'sxpy-exit) (thunk* '(#f unreadable))])
-  (let* ([tmp-file (make-temporary-file *matches-tmp-fmt*)]
-         [tmp-out  (open-output-file tmp-file #:exists 'truncate)])
-   (write-bytes (sexp-bytes->py-bytes sxpy (hash-ref proc 'stdout)) tmp-out)
-   (close-output-port tmp-out)
+  (let* ([desugared-py    (sexp-bytes->py-bytes sxpy (hash-ref proc 'stdout))]
+         [desugared-input (open-input-bytes desugared-py)])
    (with-handlers 
     ([exn:fail:timeout? 
       (thunk* (error-msg "Your desugared python code failed to terminate before the "
@@ -163,7 +160,8 @@
               (exit 1))])
     (begin/timeout timeout
      (let ([py-orig    (run python3 input)]
-           [py-after   (run python3 (path->string tmp-file))])
+           [py-after   (run python3 #:input desugared-input)])
+      (close-input-port desugared-input)
       (list (and (proc-success? py-orig) 
                  (proc-success? py-after)
                  (bytes=? (hash-ref py-orig 'stdout)
