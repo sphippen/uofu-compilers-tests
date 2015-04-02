@@ -6,3 +6,5 @@ a, b, c, d, e, *f, g, h = range(8)
 print(a, b, c, d, e, f, g, h)
 x = y = z = 10
 print(x, y, z)
+x = y = a, *b, c, d = list(range(10))
+print(x, y, a, b, c, d)
