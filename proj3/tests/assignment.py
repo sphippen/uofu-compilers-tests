@@ -8,3 +8,8 @@ x = y = z = 10
 print(x, y, z)
 x = y = a, *b, c, d = list(range(10))
 print(x, y, a, b, c, d)
+
+[a, b, c] = range(5, 5+3)
+print(a, b, c)
+[a, b, *c, d, e, f] = range(1, 40)
+print(a, b, c, d)
