@@ -170,7 +170,7 @@
             py-orig
             py-after)))))))
 
-(define (bin-proc-for-input pylex pyparse bin in [timeout 15])
+(define (bin-proc-for-input pylex pyparse bin in [timeout 30])
  (begin/timeout timeout
   (let ([lex-proc (run pylex #:input in)])
    (if (not (= (hash-ref lex-proc 'status) 0))
@@ -302,7 +302,7 @@
                  [exn:fail:timeout?
                   (thunk*
                    (error-msg "pydesugar1, pyparse, or pylex didn't exit after "
-                              "15 seconds. This is likely because of an infinite "
+                              "30 seconds. This is likely because of an infinite "
                               "loop bug in pydesugar1.")
                    (exit 1))])
    (run-test-case diff? python3 pylex pyparse sxpy bin case)))
