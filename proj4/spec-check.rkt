@@ -197,12 +197,12 @@
     `(ImportFrom (module ,(f-spec/identifier? id))
                  (names . ,(map f-spec/alias aliases))
                  (level ,(f-spec/int? id)))]
-   [(and stmt `(Global . ,(? identifier))) stmt]
-   [(and stmt `(NonLocal . ,(? identifier))) stmt]
+   [(and stmt `(Global ,(? identifier) ..1)) stmt]
+   [(and stmt `(NonLocal ,(? identifier) ..1)) stmt]
    [(and stmt '(Pass)) stmt]
    [(and stmt '(Break)) stmt]
    [(and stmt '(Continue)) stmt]
-   [(and stmt `(Local . ,(? identifier?))) stmt]
+   [(and stmt `(Local ,(? identifier?) ..1)) stmt]
    [(and stmt `(Comment ,(? string?))) stmt]
    [else '()]))
 
