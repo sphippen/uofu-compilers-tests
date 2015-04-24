@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+IN="$1"
+OUT=`echo "$IN" | sed -E 's/(.*)\.[^.]*$/\1.post-p3/'`
+
+cat "$IN" | $DIR/../ref/pysx | ssh vulcan "pydesugar --p3" > "$OUT"
+
