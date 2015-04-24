@@ -35,10 +35,10 @@
                     0 (- file-len (+ 1 (string-length ext))))
          ext))))
 
-(define (path/ext? ext f)
+(define (path/ext? mext f)
  (match-let ([(list file-name ext) 
               (file-split f)])
-  (string=? ext ext)))
+  (string=? ext mext)))
 
 (define path/py? (curry path/ext? "py"))
 (define path/test? (curry path/ext? "post-p3"))
@@ -65,13 +65,10 @@
            (cons (hash-ref orig-named cur) orig-unpaired))))))
 
 (define (join-tests orig-files test-files)
- (let* ([namer (lambda (f) (list (name-for-test-file f) f))]
-        [py-named (map namer orig-files)]
-        [test-named (map namer test-files)])
-  (join-tests/named
-   (make-hash py-named)
-   (make-hash test-named)
-   '() '())))
+ (let* ([namer (lambda (f) (cons (name-for-test-file f) f))]
+        [py-named (make-immutable-hash (map namer orig-files))]
+        [test-named (make-immutable-hash (map namer test-files))])
+  (join-tests/named py-named test-named '() '())))
 
 (define (tests-in-dir dir)
  (let* ([files (directory-list dir #:build? #t)]
@@ -81,10 +78,12 @@
                (join-tests py-files test-files)])
    (when (not (null? py-unpaired))
     (apply error-msg 
-     (cons "No .post-p3 files for the following tests:" py-unpaired)))
+     (cons "No .post-p3 files for the following tests:" 
+           (map path->string py-unpaired))))
    (when (not (null? test-unpaired))
     (apply error-msg
-     (cons "No .py files for the following tests:" test-unpaired)))
+     (cons "No .py files for the following tests:" 
+           (map path->string test-unpaired))))
    (when (not (and (null? py-unpaired) (null? test-unpaired)))
     (exit 1))
    paired)))
@@ -143,12 +142,16 @@
  (string->bytes/utf-8
   (pretty-format s)))
 
+(define (proc-success? p [success-code 0]) 
+ (= (hash-ref p 'status) success-code))
+
 (define (sexp-bytes->py-bytes sxpy b [timeout *sxpy-timeout*])
  (let ([exn-handler 
        (lambda (case)
         (thunk* (error-msg (format "sxpy ~a. This should " case)
                            "never happen. Please mail the class mailing list or "
-                           "josh@kunz.xyz with details.")))])
+                           "josh@kunz.xyz with details.")
+                (raise 'sxpy-fail)))])
  (with-handlers ([exn:fail:timeout? 
                   (exn-handler (format "didn't exit after ~a seconds" timeout))]
                  [(curry eq? 'sxpy-exit) 
@@ -160,9 +163,6 @@
     (when (not (proc-success? proc)) 
      (raise 'sxpy-exit))
     (hash-ref proc 'stdout))))))
-
-(define (proc-success? p [success-code 0]) 
- (= (hash-ref p 'status) success-code))
 
 ; **** Checkers *****
 
@@ -196,14 +196,14 @@
 
 (define (proc->maybe-sexp proc)
  (with-handlers ([exn:fail:read? (thunk* 'unreadable)])
-  (list 'sexp (bytes->sexp (hash-ref proc 'stdout)))))
+  (list 'sexp (car (bytes->sexp (hash-ref proc 'stdout))))))
 
 (define (maybe-sexp->maybe-py sxpy maybe-sexp)
  (match maybe-sexp
   ['unreadable 'unreadable]
   [`(sexp ,sexp)
-   (with-handlers ([(curry equal? 'sxpy-exit) (thunk* 'unreadable)])
-    `(py ,(sexp-bytes->py-bytes (sexp->bytes sexp))))]))
+   (with-handlers ([(curry equal? 'sxpy-fail) (thunk* 'unreadable)])
+    `(py ,(sexp-bytes->py-bytes sxpy (sexp->bytes sexp))))]))
 
 (define (proc-for-input bin in [timeout *pydesugar-timeout*])
  (with-handlers 
@@ -222,7 +222,7 @@
    ['no-exit 'no-exit]
    [`(exit ,proc)
     (let* ([maybe-sexp (proc->maybe-sexp proc)]
-           [maybe-py   (maybe-sexp->maybe-py)])
+           [maybe-py   (maybe-sexp->maybe-py sxpy maybe-sexp)])
     `(exit ,(list proc maybe-sexp maybe-py
                   (matches?/spec maybe-sexp) 
                   (matches?/python python3 orig-f maybe-py))))])))
@@ -295,7 +295,7 @@
     (diff-maybe/bytes (hash-ref orig 'stdout) (hash-ref after 'stdout))])))
 
 (define (run-test-case python3 sxpy bin case)
- (let* ([case-name  (car (file-split case))]
+ (let* ([case-name  (name-for-test-file (car case))]
         [output     (check-case python3 sxpy bin case)])
   (match output
    ['no-exit
@@ -303,8 +303,9 @@
     (error-msg (format "pydesugar2 didn't exit after ~a seconds." *pydesugar-timeout*)
                        "This is likely because of an infinite "
                        "loop bug in pydesugar2.")]
-   [`(exit ,(list proc (list passed?/sexp sexp-rest)
-                       (list passed?/python py-rest)))
+   [`(exit ,(list proc maybe-sexp maybe-py
+                  (list passed?/sexp sexp-rest)
+                  (list passed?/python py-rest)))
     (let ([passes? (and (proc-success? proc) passed?/sexp passed?/python)])
      (printf "~a: ~a\n" (if passes? *success* *failure*) case-name)
      (when (not passes?)
@@ -316,11 +317,11 @@
 (define parse-args
  (command-line 
   #:program "test-cases"
-  #:args (pylex pyparse sxpy bin test-dir)
+  #:args (sxpy bin test-dir)
   (thunk* 
    (when (not (find-executable-path "diff"))
          (error-msg "Couldn't find diff utility. Add it to the path.")
-         (exit 1)))
+         (exit 1))
    (let ([test-dir-path (fix-path test-dir)]
          [bin-path      (fix-path bin)]
          [sxpy-path     (fix-path sxpy)]
@@ -335,7 +336,7 @@
         (check-binary "sxpy" sxpy-path)
         (check-binary "pydesugar2" bin-path)
         (list python3-path sxpy-path bin-path 
-              (tests-in-dir test-dir-path)))))
+              (tests-in-dir test-dir-path))))))
 
 ;Make sure we use `write` for pretty print
 (print-as-expression #f)
