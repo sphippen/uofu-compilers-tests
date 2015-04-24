@@ -1,6 +1,6 @@
 #lang racket
 
-(provide f-spec)
+(provide f-spec f-spec*)
 
 (define (is-fix? of what)
  (equal? what (of what)))
@@ -21,7 +21,7 @@
  (set-member? '(Eq NotEq Lt LtE Gt GtE Is IsNot In NotIn) x))
 
 (define (name-constant? n)
- (set-member (list 'True 'False 'None) n))
+ (set-member? (list 'True 'False 'None) n))
 
 
 (define f-spec/identifier?
@@ -94,7 +94,7 @@
 
 (define f-spec/except-handler
  (match-lambda
-  [`(except ,a (? identifier? id) . ,body)
+  [`(except ,a ,(? identifier? id) . ,body)
    `(except ,(f-spec/aexpr a) ,id . ,(map f-spec/stmt body))]
   [else '()]))
 
@@ -142,7 +142,7 @@
   [`(Subscript ,a ,slice)
    `(Subscript ,(f-spec/aexpr a) ,(f-spec/slice slice))]
   [`(List . ,as)
-   `(List . ,(map f-spec/aexpr as))
+   `(List . ,(map f-spec/aexpr as))]
   [`(Tuple . ,as)
    `(Tuple . ,(map f-spec/aexpr as))]
   [else '()]))
@@ -168,7 +168,7 @@
     `(Delete ,(f-spec/cexpr cexpr))]
    [`(Assign (targets ,t) (value ,v))
     `(Assign (targets ,(f-spec/cexpr t)) (value ,(f-spec/cexpr v)))]
-   [`(AugAssign ,a (? operator? op) ,c)
+   [`(AugAssign ,a ,(? operator? op) ,c)
     `(AugAssign ,(f-spec/aexpr a) ,op ,(f-spec/cexpr c))]
    [`(While (test ,a) (body . ,body) (orelse . ,orelse))
     `(While (test ,(f-spec/aexpr a))
@@ -184,7 +184,7 @@
    [`(Try (body . ,body)
           (handlers ,handler)
           (orelse . ,orelse)
-          (finalbody . finalbody))
+          (finalbody . ,finalbody))
     `(Try (body . ,(map f-spec/stmt body))
           (handlers ,(f-spec/except-handler handler))
           (orelse . ,(map f-spec/stmt orelse))
@@ -197,8 +197,8 @@
     `(ImportFrom (module ,(f-spec/identifier? id))
                  (names . ,(map f-spec/alias aliases))
                  (level ,(f-spec/int? id)))]
-   [(and stmt `(Global ,(? identifier) ..1)) stmt]
-   [(and stmt `(NonLocal ,(? identifier) ..1)) stmt]
+   [(and stmt `(Global ,(? identifier?) ..1)) stmt]
+   [(and stmt `(NonLocal ,(? identifier?) ..1)) stmt]
    [(and stmt '(Pass)) stmt]
    [(and stmt '(Break)) stmt]
    [(and stmt '(Continue)) stmt]
@@ -211,3 +211,9 @@
   [`(Module . ,stmts)
    `(Module . ,(map f-spec/stmt stmts))]
   [else '()]))
+
+(define (f-spec* what)
+ (if (null? what) 
+     '(#f ())
+     (let ([after (f-spec what)])
+      (list (equal? what after) after))))
