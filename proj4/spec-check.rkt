@@ -12,7 +12,7 @@
  (set-member? (list 'Add 'Sub 'Mult 'Div 'Mod 'Pow 
                     'LShift 'RShift 
                     'BitOr 'BitXor 'BitAnd 
-                    'FloorDiv)) x)
+                    'FloorDiv) x))
 
 (define (unary-op? x)
  (set-member? '(Invert Not UAdd USub) x))
@@ -22,7 +22,6 @@
 
 (define (name-constant? n)
  (set-member? (list 'True 'False 'None) n))
-
 
 (define f-spec/identifier?
  (match-lambda
@@ -126,12 +125,12 @@
              (comparators ,(f-spec/aexpr cmp)))]
   [`(Call (func ,func)
           (args . ,args)
-          (keyworkds . ,keywords)
+          (keywords . ,keywords)
           (starargs ,star)
           (kwargs ,kwarg))
    `(Call (func ,(f-spec/aexpr func))
           (args . ,(map f-spec/aexpr args))
-          (keyworkds . ,(map f-spec/keyword keywords))
+          (keywords . ,(map f-spec/keyword keywords))
           (starargs ,star)
           (kwargs ,kwarg))]
   [(and expr `(Str ,(? string?))) expr]
