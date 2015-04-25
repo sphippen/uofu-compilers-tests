@@ -201,7 +201,7 @@
    [(and stmt '(Pass)) stmt]
    [(and stmt '(Break)) stmt]
    [(and stmt '(Continue)) stmt]
-   [(and stmt `(Local ,(? identifier?) ..1)) stmt]
+   [(and stmt `(Local . ,(? identifier?))) stmt]
    [(and stmt `(Comment ,(? string?))) stmt]
    [else '()]))
 
