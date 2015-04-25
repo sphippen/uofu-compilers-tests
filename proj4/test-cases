@@ -70,6 +70,10 @@
         [test-named (make-immutable-hash (map namer test-files))])
   (join-tests/named py-named test-named '() '())))
 
+(define (less-than/case? case-a case-b)
+ (string<? (path->string (car case-a)) 
+           (path->string (car case-b))))
+
 (define (tests-in-dir dir)
  (let* ([files (directory-list dir #:build? #t)]
         [py-files (filter path/py? files)]
@@ -86,7 +90,7 @@
            (map path->string test-unpaired))))
    (when (not (and (null? py-unpaired) (null? test-unpaired)))
     (exit 1))
-   paired)))
+   (sort paired less-than/case?))))
 
 (define (valid-binary? b)
  (and (file-exists? b)
@@ -196,7 +200,9 @@
 
 (define (proc->maybe-sexp proc)
  (with-handlers ([exn:fail:read? (thunk* 'unreadable)])
-  (list 'sexp (car (bytes->sexp (hash-ref proc 'stdout))))))
+  (match (bytes->sexp (hash-ref proc 'stdout))
+   [`(,(? list? m)) `(sexp ,m)]
+   [else 'unreadable])))
 
 (define (maybe-sexp->maybe-py sxpy maybe-sexp)
  (match maybe-sexp
@@ -266,8 +272,8 @@
 
 (define (diff/sexp orig edited)
  (printf " ~a ->\n" *diff*)
- (display (diff/bytes (sexp->bytes edited) 
-                      (sexp->bytes orig))))
+ (display (diff/bytes/no-added (sexp->bytes edited) 
+                               (sexp->bytes orig))))
 
 (define (display-sexp-match proc passed? payload)
  (printf "    ~a: ~a\n" *check* 
