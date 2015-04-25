@@ -53,14 +53,14 @@
 (define f-spec/args
  (match-lambda 
   [(and args 
-        `(Arguments (args . ,(? arg? args))
-                    (arg-types . ,(? false?))
+        `(Arguments (args ,(? arg?) ...)
+                    (arg-types ,(? false?) ...)
                     (vararg ,(? arg??)) 
-                    (kwonlyargs . ,(? arg?))
-                    (kwonlyarg-types . ,(? false?))
-                    (kw_defaults . ,(? false?))
+                    (kwonlyargs ,(? arg?) ...)
+                    (kwonlyarg-types ,(? false?) ...)
+                    (kw_defaults ,(? false?) ...)
                     (kwarg ,(? arg??))
-                    (defaults . ,(? false?)))) args]
+                    (defaults ,(? false?) ...))) args]
   [else '()]))
 
 (define f-spec/aexpr
@@ -131,8 +131,8 @@
    `(Call (func ,(f-spec/aexpr func))
           (args . ,(map f-spec/aexpr args))
           (keywords . ,(map f-spec/keyword keywords))
-          (starargs ,star)
-          (kwargs ,kwarg))]
+          (starargs ,(f-spec/aexpr? star))
+          (kwargs ,(f-spec/aexpr? kwarg)))]
   [(and expr `(Str ,(? string?))) expr]
   [(and expr `(Bytes ,(? bytes?))) expr]
   ; the following expressions can appear in assignment context:
@@ -201,7 +201,7 @@
    [(and stmt '(Pass)) stmt]
    [(and stmt '(Break)) stmt]
    [(and stmt '(Continue)) stmt]
-   [(and stmt `(Local . ,(? identifier?))) stmt]
+   [(and stmt `(Local ,(? identifier?) ...)) stmt]
    [(and stmt `(Comment ,(? string?))) stmt]
    [else '()]))
 
