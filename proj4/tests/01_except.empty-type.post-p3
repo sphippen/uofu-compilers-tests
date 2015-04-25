@@ -1,0 +1,47 @@
+(Module
+ (Try
+  (body
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "Hello Try"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Raise
+    (Call
+     (func (Name TypeError))
+     (args (Str ""))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "after raise"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    (Name AttributeError)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Shouldn't Print"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    #f
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Caught general except"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))

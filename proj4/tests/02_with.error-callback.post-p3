@@ -1,0 +1,272 @@
+(Module
+ (FunctionDef
+  (name _tmp_29)
+  (args
+   (Arguments
+    (args _tmp_30)
+    (arg-types #f)
+    (vararg _tmp_31)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_32)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local __init__ __enter__ __exit__)
+   (FunctionDef
+    (name __init__)
+    (args
+     (Arguments
+      (args self enter binding exit_ok exit_err)
+      (arg-types #f #f #f #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f #f #f #f)))
+    (body
+     (Local)
+     (Assign (targets (Attribute (Name self) enter)) (value (Name enter)))
+     (Assign (targets (Attribute (Name self) binding)) (value (Name binding)))
+     (Assign (targets (Attribute (Name self) exit_ok)) (value (Name exit_ok)))
+     (Assign
+      (targets (Attribute (Name self) exit_err))
+      (value (Name exit_err))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __init__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __init__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__init__"))))
+    (value (Name __init__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__init__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __enter__)
+    (args
+     (Arguments
+      (args self)
+      (arg-types #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Attribute (Name self) enter))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (Return (Attribute (Name self) binding)))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __enter__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __enter__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__enter__"))))
+    (value (Name __enter__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__enter__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __exit__)
+    (args
+     (Arguments
+      (args self type value traceback)
+      (arg-types #f #f #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f #f #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "value:") (Name value))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (If
+      (test
+       (BoolOp
+        And
+        (Compare
+         (left (Name type))
+         (ops IsNot)
+         (comparators (NameConstant None)))
+        (Compare
+         (left (Name value))
+         (ops IsNot)
+         (comparators (NameConstant None)))
+        (Compare
+         (left (Name traceback))
+         (ops IsNot)
+         (comparators (NameConstant None)))))
+      (body
+       (Expr
+        (Call
+         (func (Name print))
+         (args (Attribute (Name self) exit_ok))
+         (keywords)
+         (starargs #f)
+         (kwargs #f))))
+      (orelse
+       (If
+        (test
+         (BoolOp
+          And
+          (Compare
+           (left (Name type))
+           (ops Is)
+           (comparators (NameConstant None)))
+          (Compare
+           (left (Name value))
+           (ops Is)
+           (comparators (NameConstant None)))
+          (Compare
+           (left (Name traceback))
+           (ops Is)
+           (comparators (NameConstant None)))))
+        (body
+         (Expr
+          (Call
+           (func (Name print))
+           (args (Attribute (Name self) exit_err))
+           (keywords)
+           (starargs #f)
+           (kwargs #f))))
+        (orelse
+         (Raise
+          (Call
+           (func (Name RuntimeError))
+           (args (Str "__exit__ called with invalid args"))
+           (keywords)
+           (starargs #f)
+           (kwargs #f))))))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __exit__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __exit__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__exit__"))))
+    (value (Name __exit__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__exit__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "test_ctxt")
+      (BinOp (Tuple (Name _tmp_30)) Add (Name _tmp_31))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_32)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_29) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_29) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name test_ctxt))
+  (value
+   (Call (func (Name _tmp_29)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (With
+  (((Call
+     (func (Name test_ctxt))
+     (args (Str "enter A") (Str "bind A") (Str "exit_ok A") (Str "exit_err A"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    (Name foo)))
+  (Expr
+   (Call
+    (func (Name print))
+    (args (Name foo))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Try
+  (body
+   (With
+    (((Call
+       (func (Name test_ctxt))
+       (args
+        (Str "enter B")
+        (Str "bind B")
+        (Str "exit_ok B")
+        (Str "exit_err B"))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))
+      (Name foo)))
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Name foo))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))
+    (Raise
+     (Call
+      (func (Name TypeError))
+      (args (Str "test exn"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "after raise"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (handlers
+   (except
+    (Name BaseException)
+    e
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "caught exn:") (Name e))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))

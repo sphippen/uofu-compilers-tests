@@ -1,0 +1,58 @@
+(Module
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Str "before try"))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Try
+  (body
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "before exn"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Raise
+    (Call
+     (func (Name RuntimeError))
+     (args (Str "err"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "after exn"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    (Name RuntimeError)
+    foo
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in exn"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Attribute (Name foo) args))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Str "after try"))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

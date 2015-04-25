@@ -1,0 +1,81 @@
+(Module
+ (Import (contextlib #f))
+ (FunctionDef
+  (name cntxt)
+  (args
+   (Arguments
+    (args before yields after)
+    (arg-types #f #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f #f)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name before))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Expr (Yield (Name yields)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name after))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name cntxt) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name cntxt) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name cntxt) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets (Name cntxt))
+  (value
+   (Call
+    (func (Attribute (Name contextlib) contextmanager))
+    (args (Name cntxt))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (With
+  (((Call
+     (func (Name cntxt))
+     (args (Str "before ctxt") (Str "in with") (Str "after ctxt"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    (Name foo)))
+  (Expr
+   (Call
+    (func (Name print))
+    (args (Name foo))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (With
+  (((Call
+     (func (Name cntxt))
+     (args (Str "before ctnxt B") (Str "in with B") (Str "after ctxt B"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))
+    #f))
+  (Expr
+   (Call
+    (func (Name print))
+    (args (Str "no binding"))
+    (keywords)
+    (starargs #f)
+    (kwargs #f)))))

@@ -1,0 +1,92 @@
+(Module
+ (Import (os #f))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Str "before try"))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Try
+  (body
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "before raise"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Raise
+    (Call
+     (func (Name TypeError))
+     (args (Str "something"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "after raise"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    (Name AttributeError)
+    e
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in attribute error exn"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    (Name RuntimeError)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in runtime error"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    (Name NotImplementedError)
+    quux
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in not implemented error"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    (Attribute (Name os) error)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in os error alias"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    (Name TypeError)
+    foo
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "in type error") (Attribute (Name foo) args))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Str "after try"))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
