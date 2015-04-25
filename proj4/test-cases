@@ -277,7 +277,7 @@
 
 (define (display-sexp-match proc passed? payload)
  (printf "    ~a: ~a\n" *check* 
-  (color "Is Modified AST" (if passed? 'green 'red)))
+  (color "In Restricted Grammar" (if passed? 'green 'red)))
  (when (not passed?)
   (printf " ~a -> " (color "AST" 'white))
   (match payload
