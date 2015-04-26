@@ -17,7 +17,7 @@
         (kw_defaults)
         (kwarg #f)
         (defaults))
-       (BinOp (Num 2) Div (Num 1))))
+       (BinOp (Num 2) FloorDiv (Num 1))))
      (args)
      (keywords)
      (starargs #f)
