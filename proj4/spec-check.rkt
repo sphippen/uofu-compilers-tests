@@ -1,6 +1,6 @@
 #lang racket
 
-(provide f-spec f-spec*)
+(provide f-spec f-spec* f-spec/stmt)
 
 (define (is-fix? of what)
  (equal? what (of what)))
@@ -168,7 +168,7 @@
    [`(Assign (targets ,t) (value ,v))
     `(Assign (targets ,(f-spec/cexpr t)) (value ,(f-spec/cexpr v)))]
    [`(AugAssign ,a ,(? operator? op) ,c)
-    `(AugAssign ,(f-spec/aexpr a) ,op ,(f-spec/cexpr c))]
+    `(AugAssign ,(f-spec/cexpr a) ,op ,(f-spec/cexpr c))]
    [`(While (test ,a) (body . ,body) (orelse . ,orelse))
     `(While (test ,(f-spec/aexpr a))
             (body . ,(map f-spec/stmt body))
@@ -192,12 +192,12 @@
     `(Import . ,(map f-spec/alias aliases))]
    [`(ImportFrom (module ,id)
                  (names . ,aliases)
-                 (level , level))
+                 (level ,level))
     `(ImportFrom (module ,(f-spec/identifier? id))
                  (names . ,(map f-spec/alias aliases))
-                 (level ,(f-spec/int? id)))]
+                 (level ,(f-spec/int? level)))]
    [(and stmt `(Global ,(? identifier?) ..1)) stmt]
-   [(and stmt `(NonLocal ,(? identifier?) ..1)) stmt]
+   [(and stmt `(Nonlocal ,(? identifier?) ..1)) stmt]
    [(and stmt '(Pass)) stmt]
    [(and stmt '(Break)) stmt]
    [(and stmt '(Continue)) stmt]
