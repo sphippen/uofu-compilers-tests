@@ -1,0 +1,68 @@
+(Module
+ (FunctionDef
+  (name g)
+  (args
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Local) (Return (Name x)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name g) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name g) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name g) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name f)
+  (args
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Local) (Return (Name x)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name f) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __annotations__))
+  (value (Dict (keys) (values))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name f))
+     (args
+      (Call
+       (func (Name g))
+       (args (BinOp (Num 100) Mult (BinOp (Num 10) Add (Num 5))))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

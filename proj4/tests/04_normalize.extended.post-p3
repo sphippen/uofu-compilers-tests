@@ -1,0 +1,381 @@
+(Module
+ (Import (os #f))
+ (ImportFrom (module os) (names (path #f)) (level 0))
+ (FunctionDef
+  (name id)
+  (args
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Local) (Return (Name x)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name id) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign (targets (Name v)) (value (Num 10)))
+ (AugAssign
+  (Name v)
+  Add
+  (Call
+   (func (Name id))
+   (args (BinOp (Num 10) Add (Num 10)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Str "v:") (Name v))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (Str "A"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (Tuple (Str "B")))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (List (Str "C")))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (Bytes #"D"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (FunctionDef
+  (name _tmp_50)
+  (args
+   (Arguments
+    (args _tmp_51)
+    (arg-types #f)
+    (vararg _tmp_52)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_53)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Pass)
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "empty")
+      (BinOp (Tuple (Name _tmp_51)) Add (Name _tmp_52))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_53)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_50) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_50) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name empty))
+  (value
+   (Call (func (Name _tmp_50)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Name e))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Name e) f))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Attribute (Name e) f) g))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Attribute (Attribute (Name e) f) g) X))
+  (value (Num 2)))
+ (Assign
+  (targets (Attribute (Attribute (Attribute (Name e) f) g) h))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Attribute (Attribute (Attribute (Name e) f) g) h) i))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets
+   (Attribute
+    (Attribute (Attribute (Attribute (Attribute (Name e) f) g) h) i)
+    j))
+  (value (Str "E")))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args
+      (Attribute
+       (Attribute (Attribute (Attribute (Attribute (Name e) f) g) h) i)
+       j))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign (targets (Name foo)) (value (List (Num 1) (Num 2) (Num 3) (Num 4))))
+ (Assign
+  (targets (Subscript (Name foo) (Slice (Num 1) (Num 2) #f)))
+  (value (Tuple (Num 99) (Num 100))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (Name foo))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets
+   (Subscript
+    (Name foo)
+    (Slice
+     (BinOp
+      (BinOp (BinOp (Num 2) FloorDiv (Num 1)) Mult (Num 2))
+      FloorDiv
+      (Num 4))
+     (Call
+      (func (Name id))
+      (args (BinOp (BinOp (Num 100) FloorDiv (Num 10)) Sub (Num 7)))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))
+     #f)))
+  (value (List (Str "1") (Str "2") (Str "3"))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args (Name foo))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets
+   (Subscript
+    (Name foo)
+    (Slice #f (Attribute (Attribute (Attribute (Name e) f) g) X) #f)))
+  (value (List (Num 1) (Num 2) (Num 3))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name id))
+     (args
+      (Call
+       (func (Name id))
+       (args
+        (Call
+         (func (Name id))
+         (args
+          (Call
+           (func (Name id))
+           (args
+            (Call
+             (func (Name id))
+             (args (Name foo))
+             (keywords)
+             (starargs #f)
+             (kwargs #f)))
+           (keywords)
+           (starargs #f)
+           (kwargs #f)))
+         (keywords)
+         (starargs #f)
+         (kwargs #f)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (AugAssign (Subscript (Name foo) (Index (Num 0))) Add (Num 1))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name foo))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign (targets (Name BAR)) (value (Num 10)))
+ (FunctionDef
+  (name quux)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Global BAR) (AugAssign (Name BAR) Add (Num 10)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name quux) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name quux) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name quux) __annotations__))
+  (value (Dict (keys) (values))))
+ (Expr (Call (func (Name quux)) (args) (keywords) (starargs #f) (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name BAR))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (FunctionDef
+  (name rax)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local a ducks)
+   (Assign (targets (Name a)) (value (Num 10)))
+   (FunctionDef
+    (name ducks)
+    (args
+     (Arguments
+      (args)
+      (arg-types)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults)))
+    (body
+     (Local)
+     (Nonlocal a)
+     (AugAssign
+      (Name a)
+      Add
+      (Call
+       (func (Name id))
+       (args (Num 50))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name ducks) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name ducks) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name ducks) __annotations__))
+    (value (Dict (keys) (values))))
+   (Expr
+    (Call (func (Name ducks)) (args) (keywords) (starargs #f) (kwargs #f)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name a))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name rax) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name rax) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name rax) __annotations__))
+  (value (Dict (keys) (values))))
+ (Expr (Call (func (Name rax)) (args) (keywords) (starargs #f) (kwargs #f))))
