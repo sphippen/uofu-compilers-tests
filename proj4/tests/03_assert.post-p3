@@ -1,0 +1,42 @@
+(Module
+ (Assert (NameConstant True))
+ (Assert
+  (Compare (left (BinOp (Num 1) Add (Num 1))) (ops Eq) (comparators (Num 2))))
+ (Assert
+  (Compare
+   (left
+    (Call
+     (func
+      (Lambda
+       (Arguments
+        (args)
+        (arg-types)
+        (vararg #f)
+        (kwonlyargs)
+        (kwonlyarg-types)
+        (kw_defaults)
+        (kwarg #f)
+        (defaults))
+       (BinOp (Num 2) Div (Num 1))))
+     (args)
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (ops Eq)
+   (comparators (Num 2))))
+ (Assert (NameConstant True) (Str "Asserting true with message"))
+ (Try
+  (body (Assert (NameConstant False) (Str "Asserting false with message")))
+  (handlers
+   (except
+    (Name AssertionError)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Assert properly raised"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))
