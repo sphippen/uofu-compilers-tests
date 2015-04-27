@@ -1,0 +1,137 @@
+(Module
+ (Assign
+  (targets (Name t))
+  (value
+   (GeneratorExp
+    (BinOp (Name x) Mult (Num 2))
+    (for
+     (Name x)
+     in
+     (Call
+      (func (Name range))
+      (args (Num 100))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))
+     if))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name list))
+     (args
+      (Call
+       (func (Name tuple))
+       (args
+        (Call
+         (func (Name list))
+         (args (Name t))
+         (keywords)
+         (starargs #f)
+         (kwargs #f)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (FunctionDef
+  (name id)
+  (args
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Local) (Return (Name x)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name id) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets (Name maybe_sum))
+  (value
+   (Lambda
+    (Arguments
+     (args a b)
+     (arg-types #f #f)
+     (vararg #f)
+     (kwonlyargs)
+     (kwonlyarg-types)
+     (kw_defaults)
+     (kwarg #f)
+     (defaults #f #f))
+    (IfExp
+     (Compare (left (Name a)) (ops Gt) (comparators (Name b)))
+     (BinOp (Name a) Add (Name b))
+     (BinOp (Name b) Sub (Name a))))))
+ (Assign
+  (targets (Name d))
+  (value
+   (GeneratorExp
+    (Call
+     (func (Name maybe_sum))
+     (args)
+     (keywords)
+     (starargs
+      (Call
+       (func (Name id))
+       (args (Tuple (Name z) (Name y)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (kwargs #f))
+    (for
+     (Name z)
+     in
+     (Call
+      (func (Name range))
+      (args (Num 100))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))
+     if
+     (BinOp (Name z) Mod (Num 2))
+     (Compare (left (Name z)) (ops Gt) (comparators (Num 5))))
+    (for
+     (Name y)
+     in
+     (Call
+      (func (Name range))
+      (args (Num 30))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))
+     if
+     (Compare
+      (left (Name z))
+      (ops Lt)
+      (comparators (BinOp (Name y) Mult (Num 2))))))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name list))
+     (args (Name d))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
