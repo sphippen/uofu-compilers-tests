@@ -8,6 +8,10 @@ Run it as follows
 
     $ ./test-cases <path-to-sxpy> <path-to-pydesugar2> <test-dir>
 
+Additionally, you can use the "--case" option to specify a single test to run
+(instead of running the whole suite which is the default). You can specify
+"--case" multiple times to run a subset of the tests.
+
 The reference pylex, pyparse, and sxpy are in the top-level 'ref' directory.
 As a shorthand you can run:
 
