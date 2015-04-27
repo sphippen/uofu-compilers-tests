@@ -320,40 +320,57 @@
       (display-python-match proc passed?/python py-rest))
      passes?)])))
 
+(define (pick-case named cases)
+ (let* ([namer (lambda (c) (cons (name-for-test-file (car c)) c))]
+        [named-cases (make-immutable-hash (map namer cases))])
+  (if (hash-has-key? named-cases named)
+      (hash-ref named-cases named)
+      (begin
+       (error-msg (format "No case named \"~v\"" named))
+       (exit 1)))))
+
 (define parse-args
- (command-line 
-  #:program "test-cases"
-  #:args (sxpy bin test-dir)
-  (thunk* 
-   (when (not (find-executable-path "diff"))
-         (error-msg "Couldn't find diff utility. Add it to the path.")
-         (exit 1))
-   (let ([test-dir-path (fix-path test-dir)]
-         [bin-path      (fix-path bin)]
-         [sxpy-path     (fix-path sxpy)]
-         [python3-path  (find-executable-path "python3")])
-        (when (not python3-path)
-              (error-msg "Couldn't find `python3` in your path.")
-              (exit 1))
-        (unless (directory-exists? test-dir-path)
-                (eprintf "Test directory \"~a\" doesn't exist.\n" 
-                         (path->string test-dir-path))
-                (exit 1))
-        (check-binary "sxpy" sxpy-path)
-        (check-binary "pydesugar2" bin-path)
-        (list python3-path sxpy-path bin-path 
-              (tests-in-dir test-dir-path))))))
+ (let ([cases (make-parameter '())])
+  (command-line 
+   #:program "test-cases"
+   #:multi ("--case" test-name ("Only run the test with the given name." 
+                                "Can be specified multiple times.")
+                     (cases (cons test-name (cases))))
+   #:args (sxpy bin test-dir)
+   (thunk* 
+    (when (not (find-executable-path "diff"))
+          (error-msg "Couldn't find diff utility. Add it to the path.")
+          (exit 1))
+    (let ([test-dir-path (fix-path test-dir)]
+          [bin-path      (fix-path bin)]
+          [sxpy-path     (fix-path sxpy)]
+          [python3-path  (find-executable-path "python3")])
+         (when (not python3-path)
+               (error-msg "Couldn't find `python3` in your path.")
+               (exit 1))
+         (unless (directory-exists? test-dir-path)
+                 (eprintf "Test directory \"~a\" doesn't exist.\n" 
+                          (path->string test-dir-path))
+                 (exit 1))
+         (check-binary "sxpy" sxpy-path)
+         (check-binary "pydesugar2" bin-path)
+         (let* ([possible-cases (tests-in-dir test-dir-path)]
+                [to-run (if (not (null? (cases)))
+                            (map (lambda (c) (pick-case c possible-cases)) (cases))
+                            possible-cases)])
+          (list python3-path sxpy-path bin-path 
+                to-run)))))))
 
 ;Make sure we use `write` for pretty print
 (print-as-expression #f)
 (match-let ([(list python3 sxpy bin cases)
              (parse-args (current-command-line-arguments))])
  (let* ([results (map (curry run-test-case python3 sxpy bin) cases)]
-        [case-count (length cases)]
-        [fail-count (count not results)])
-  (if (= 0 fail-count)
-      (displayln "All Passed")
-      (printf "~a/~a Failed\n" fail-count case-count))
-  (when (> fail-count 0) (exit 1))))
+         [case-count (length cases)]
+         [fail-count (count not results)])
+   (if (= 0 fail-count)
+       (displayln "All Passed")
+       (printf "~a/~a Failed\n" fail-count case-count))
+   (when (> fail-count 0) (exit 1))))
 
 ;# vim: set syn=racket:
