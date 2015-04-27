@@ -1,0 +1,142 @@
+(Module
+ (FunctionDef
+  (name id)
+  (args
+   (Arguments
+    (args of)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body
+   (Local)
+   (Return
+    (Lambda
+     (Arguments
+      (args)
+      (arg-types)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults))
+     (Name of))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name id) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name id) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets (Name locked))
+  (value
+   (Lambda
+    (Arguments
+     (args a b c)
+     (arg-types #f #f #f)
+     (vararg #f)
+     (kwonlyargs)
+     (kwonlyarg-types)
+     (kw_defaults)
+     (kwarg #f)
+     (defaults #f #f #f))
+    (BoolOp
+     Or
+     (BoolOp
+      And
+      (Call (func (Name a)) (args) (keywords) (starargs #f) (kwargs #f))
+      (Call (func (Name b)) (args) (keywords) (starargs #f) (kwargs #f)))
+     (Call (func (Name c)) (args) (keywords) (starargs #f) (kwargs #f))))))
+ (Assign
+  (targets (Name foo))
+  (value
+   (Lambda
+    (Arguments
+     (args)
+     (arg-types)
+     (vararg #f)
+     (kwonlyargs)
+     (kwonlyarg-types)
+     (kw_defaults)
+     (kwarg #f)
+     (defaults))
+    (Call
+     (func (Name locked))
+     (args)
+     (keywords)
+     (starargs
+      (Call
+       (func (Name map))
+       (args (Name id) (Tuple (Num 0) (Num 1) (NameConstant False)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (kwargs #f)))))
+ (Assign
+  (targets (Name bar))
+  (value
+   (Lambda
+    (Arguments
+     (args)
+     (arg-types)
+     (vararg #f)
+     (kwonlyargs)
+     (kwonlyarg-types)
+     (kw_defaults)
+     (kwarg #f)
+     (defaults))
+    (Call
+     (func (Name locked))
+     (args)
+     (keywords)
+     (starargs
+      (Call
+       (func (Name map))
+       (args (Name id) (Tuple (Num 1) (Num 1) (List)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (kwargs #f)))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Call (func (Name bar)) (args) (keywords) (starargs #f) (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets (Name quux))
+  (value
+   (BoolOp
+    Or
+    (BoolOp
+     Or
+     (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs #f))
+     (Call (func (Name bar)) (args) (keywords) (starargs #f) (kwargs #f)))
+    (BoolOp
+     And
+     (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs #f))
+     (Call (func (Name bar)) (args) (keywords) (starargs #f) (kwargs #f))))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name quux))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

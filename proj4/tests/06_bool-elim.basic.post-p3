@@ -1,0 +1,20 @@
+(Module
+ (Assign (targets (Name a)) (value (NameConstant False)))
+ (Assign (targets (Name b)) (value (NameConstant True)))
+ (Assign (targets (Name c)) (value (NameConstant False)))
+ (Assign (targets (Name x)) (value (BoolOp And (Name a) (Name b) (Name c))))
+ (Assign (targets (Name y)) (value (BoolOp Or (Name a) (Name b) (Name c))))
+ (Assign
+  (targets (Name t))
+  (value
+   (BoolOp
+    Or
+    (BoolOp And (Name b) (Name c))
+    (BoolOp Or (BoolOp And (Name a) (Name b)) (Name c)))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name x) (Name y) (Name t))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
