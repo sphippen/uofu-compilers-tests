@@ -1,0 +1,28 @@
+(Module
+ (Assign
+  (targets (Name a))
+  (value (IfExp (NameConstant False) (Num 1) (Num 0))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name a))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets (Name b))
+  (value
+   (IfExp
+    (NameConstant False)
+    (List)
+    (IfExp
+     (List (Num 1) (Num 2) (Num 3))
+     (Tuple)
+     (IfExp (NameConstant True) (Str "") (Num 1))))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name b))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
