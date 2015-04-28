@@ -34,7 +34,7 @@
            (close-input-port proc-stdout)
            (close-input-port proc-stderr))))])
    (if (not (void? timeout))
-       (with-handlers ([exn:fail:timeout? (lambda (e) (subprocess-kill proc)
+       (with-handlers ([exn:fail:timeout? (lambda (e) (subprocess-kill proc #t)
                                                       (raise e))])
         (begin/timeout timeout (collect)))
        (collect)))))

@@ -160,13 +160,12 @@
                   (exn-handler (format "didn't exit after ~a seconds" timeout))]
                  [(curry eq? 'sxpy-exit) 
                   (exn-handler "exited with a non-zero status")])
-  (begin/timeout timeout
    (let* ([sexp-out (open-input-bytes b)]
-          [proc     (run sxpy #:input sexp-out)])
+          [proc     (run sxpy #:input sexp-out #:timeout timeout)])
     (close-input-port sexp-out)
     (when (not (proc-success? proc)) 
      (raise 'sxpy-exit))
-    (hash-ref proc 'stdout))))))
+    (hash-ref proc 'stdout)))))
 
 ; **** Checkers *****
 
@@ -187,16 +186,15 @@
                          "timeout. This is likely because a desugaring error is "
                          "causing an inifinte loop.")
               '(#f unreadable))])
-    (begin/timeout timeout
      (let* ([desugared-input (open-input-bytes py)]
-            [py-orig         (run python3 orig-f)]
-            [py-after        (run python3 #:input desugared-input)])
+            [py-orig         (run python3 #:timeout timeout orig-f)]
+            [py-after        (run python3 #:timeout timeout #:input desugared-input)])
       (close-input-port desugared-input)
       (list (and (proc-success? py-orig) 
                  (proc-success? py-after)
                  (bytes=? (hash-ref py-orig 'stdout)
                           (hash-ref py-after 'stdout)))
-            `(output ,py-orig ,py-after)))))]))
+            `(output ,py-orig ,py-after))))]))
 
 (define (proc->maybe-sexp proc)
  (with-handlers ([exn:fail:read? (thunk* 'unreadable)])
@@ -213,11 +211,8 @@
 
 (define (proc-for-input bin in [timeout *pydesugar-timeout*])
  (with-handlers 
-  ([exn:fail:timeout?
-    (thunk* 
-                       'no-exit)])
-  (begin/timeout timeout 
-   `(exit ,(run bin #:input in)))))
+  ([exn:fail:timeout? (thunk* 'no-exit)])
+   `(exit ,(run bin #:timeout timeout #:input in))))
 
 (define (check-case python3 sxpy bin case)
  (match-let* ([(list orig-f input-f) case]
