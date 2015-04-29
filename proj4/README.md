@@ -20,6 +20,10 @@ As a shorthand you can run:
 Which will automatically use the reference sxpy and the standard test-directory. 
 You should be able to run the `test-default` command from any directory.
 
+Note: There are two directories of tests: `extra` which contains tests for things
+which Matt has specifically said he won't test on, and `tests` which contains
+tests for things you may be tested on.
+
 ## Understanding Test-Runner Output
 
 There's more than one right answer to each project 4 test-case, so we can't just
