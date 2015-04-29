@@ -1,0 +1,289 @@
+(Module
+ (FunctionDef
+  (name _tmp_30)
+  (args
+   (Arguments
+    (args _tmp_31)
+    (arg-types #f)
+    (vararg _tmp_32)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_33)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local singleton __add__ __radd__ __repr__ __setitem__)
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "singleton"))))
+    (value (List)))
+   (FunctionDef
+    (name __add__)
+    (args
+     (Arguments
+      (args self rhs)
+      (arg-types #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Attribute (Attribute (Name self) singleton) extend))
+       (args (Name rhs))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (Return (Attribute (Name self) singleton)))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __add__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __add__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__add__"))))
+    (value (Name __add__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__add__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __radd__)
+    (args
+     (Arguments
+      (args self lhs)
+      (arg-types #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f)))
+    (body
+     (Local i)
+     (Assign
+      (targets (Name _tmp_28))
+      (value
+       (Call
+        (func (Name iter))
+        (args (Name lhs))
+        (keywords)
+        (starargs #f)
+        (kwargs #f))))
+     (While
+      (test
+       (Compare
+        (left (Name _tmp_28))
+        (ops IsNot)
+        (comparators (NameConstant False))))
+      (body
+       (Try
+        (body
+         (Assign
+          (targets (Name i))
+          (value
+           (Call
+            (func (Attribute (Name _tmp_28) __next__))
+            (args)
+            (keywords)
+            (starargs #f)
+            (kwargs #f)))))
+        (handlers
+         (except
+          (Name StopIteration)
+          _tmp_29
+          (Assign (targets (Name _tmp_28)) (value (NameConstant False)))
+          (Continue)))
+        (orelse)
+        (finalbody))
+       (Expr
+        (Call
+         (func (Attribute (Attribute (Name self) singleton) insert))
+         (args (Num 0) (Name i))
+         (keywords)
+         (starargs #f)
+         (kwargs #f))))
+      (orelse))
+     (Return (Attribute (Name self) singleton)))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __radd__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __radd__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__radd__"))))
+    (value (Name __radd__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__radd__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __repr__)
+    (args
+     (Arguments
+      (args self)
+      (arg-types #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f)))
+    (body
+     (Local)
+     (Return
+      (Call
+       (func (Name repr))
+       (args (Attribute (Name self) singleton))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __repr__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __repr__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__repr__"))))
+    (value (Name __repr__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__repr__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __setitem__)
+    (args
+     (Arguments
+      (args self index value)
+      (arg-types #f #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "Calling setitem!"))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (Assign
+      (targets
+       (Subscript (Attribute (Name self) singleton) (Index (Name index))))
+      (value (Name value))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __setitem__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __setitem__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__setitem__"))))
+    (value (Name __setitem__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__setitem__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "singleton_list")
+      (BinOp (Tuple (Name _tmp_31)) Add (Name _tmp_32))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_33)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_30) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_30) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name singleton_list))
+  (value
+   (Call (func (Name _tmp_30)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign (targets (Name a)) (value (List)))
+ (Assign (targets (Name b)) (value (List (Num 1))))
+ (Assign
+  (targets (Name c))
+  (value
+   (Call
+    (func (Name singleton_list))
+    (args)
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (FunctionDef
+  (name foo)
+  (args
+   (Arguments
+    (args x)
+    (arg-types #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f)))
+  (body (Local) (Return (Name x)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name foo) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name foo) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name foo) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets
+   (Subscript
+    (BinOp (BinOp (Name a) Add (Name b)) Add (Name c))
+    (Index (Num 0))))
+  (value
+   (Call
+    (func (Name foo))
+    (args (BinOp (BinOp (Num 1) Add (Num 2)) Add (Num 3)))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Attribute (Name singleton_list) singleton))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
