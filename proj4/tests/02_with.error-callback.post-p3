@@ -115,17 +115,14 @@
       (test
        (BoolOp
         And
-        (Compare
-         (left (Name type))
-         (ops IsNot)
-         (comparators (NameConstant None)))
+        (Compare (left (Name type)) (ops Is) (comparators (NameConstant None)))
         (Compare
          (left (Name value))
-         (ops IsNot)
+         (ops Is)
          (comparators (NameConstant None)))
         (Compare
          (left (Name traceback))
-         (ops IsNot)
+         (ops Is)
          (comparators (NameConstant None)))))
       (body
        (Expr
@@ -142,15 +139,15 @@
           And
           (Compare
            (left (Name type))
-           (ops Is)
+           (ops IsNot)
            (comparators (NameConstant None)))
           (Compare
            (left (Name value))
-           (ops Is)
+           (ops IsNot)
            (comparators (NameConstant None)))
           (Compare
            (left (Name traceback))
-           (ops Is)
+           (ops IsNot)
            (comparators (NameConstant None)))))
         (body
          (Expr

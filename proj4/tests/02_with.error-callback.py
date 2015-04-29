@@ -12,9 +12,9 @@ class test_ctxt:
 
     def __exit__(self, type, value, traceback):
         print("value:", value)
-        if (type is not None) and (value is not None) and (traceback is not None):
+        if (type is None) and (value is None) and (traceback is None):
             print(self.exit_ok)
-        elif (type is None) and (value is None) and (traceback is None):
+        elif (type is not None) and (value is not None) and (traceback is not None):
             print(self.exit_err)
         else:
             raise RuntimeError("__exit__ called with invalid args")
