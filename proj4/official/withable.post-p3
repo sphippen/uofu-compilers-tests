@@ -1,0 +1,124 @@
+(Module
+ (FunctionDef
+  (name _tmp_11)
+  (args
+   (Arguments
+    (args _tmp_12)
+    (arg-types #f)
+    (vararg _tmp_13)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_14)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local __enter__ __exit__)
+   (FunctionDef
+    (name __enter__)
+    (args
+     (Arguments
+      (args self)
+      (arg-types #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "entered"))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __enter__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __enter__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__enter__"))))
+    (value (Name __enter__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__enter__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name __exit__)
+    (args
+     (Arguments
+      (args self)
+      (arg-types #f)
+      (vararg args)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f)))
+    (body
+     (Local)
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "exit"))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __exit__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __exit__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__exit__"))))
+    (value (Name __exit__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__exit__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "ctxt")
+      (BinOp (Tuple (Name _tmp_12)) Add (Name _tmp_13))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_14)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_11) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_11) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name ctxt))
+  (value
+   (Call (func (Name _tmp_11)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (With
+  (((Call (func (Name ctxt)) (args) (keywords) (starargs #f) (kwargs #f))
+    (Name o)))
+  (Expr
+   (Call
+    (func (Name print))
+    (args (Str "in process"))
+    (keywords)
+    (starargs #f)
+    (kwargs #f)))))

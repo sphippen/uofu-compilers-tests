@@ -1,0 +1,113 @@
+(Module
+ (FunctionDef
+  (name a)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "a"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Num 1)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name a) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name a) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name a) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name b)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "b"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Num 2)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name b) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name b) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name b) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name c)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "c"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Num 3)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name c) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name c) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name c) __annotations__))
+  (value (Dict (keys) (values))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Compare
+     (left (Call (func (Name a)) (args) (keywords) (starargs #f) (kwargs #f)))
+     (ops Lt Lt)
+     (comparators
+      (Call (func (Name b)) (args) (keywords) (starargs #f) (kwargs #f))
+      (Call (func (Name c)) (args) (keywords) (starargs #f) (kwargs #f)))))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

@@ -1,0 +1,23 @@
+(Module
+ (Try
+  (body
+   (Raise
+    (Call
+     (func (Name Exception))
+     (args (Str "foo"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    #f
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "exception"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))

@@ -1,0 +1,8 @@
+(Module
+ (Expr
+  (Call
+   (func (Name print))
+   (args (BoolOp And (Num 1) (Num 2) (Num 3) (Num 4)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

@@ -20,9 +20,10 @@ As a shorthand you can run:
 Which will automatically use the reference sxpy and the standard test-directory. 
 You should be able to run the `test-default` command from any directory.
 
-Note: There are two directories of tests: `extra` which contains tests for things
-which Matt has specifically said he won't test on, and `tests` which contains
-tests for things you may be tested on.
+__*Note*__: There are three levels of test cases: `official` which are the offical
+tests matt has said we need to cover, `extra` which cover cases that we may
+be tested on, and `ultra` which cover things Matt has explicitly said we won't
+be tested on. `test-default` checks the `official` and `extra` cases.
 
 ## Understanding Test-Runner Output
 

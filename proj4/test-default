@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-exec $DIR/test-cases $DIR/../ref/sxpy $1 $DIR/tests
+echo "Running official tests..."
+exec $DIR/test-cases $DIR/../ref/sxpy $1 $DIR/official
+
+echo "Running extra tests..."
+exec $DIR/test-cases $DIR/../ref/sxpy $1 $DIR/extra

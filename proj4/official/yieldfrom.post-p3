@@ -1,0 +1,68 @@
+(Module
+ (FunctionDef
+  (name f)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Expr (YieldFrom (List (Num 1) (Num 2) (Num 3)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name f) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign
+  (targets (Name _tmp_6))
+  (value
+   (Call
+    (func (Name iter))
+    (args (Call (func (Name f)) (args) (keywords) (starargs #f) (kwargs #f)))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (While
+  (test
+   (Compare
+    (left (Name _tmp_6))
+    (ops IsNot)
+    (comparators (NameConstant False))))
+  (body
+   (Try
+    (body
+     (Assign
+      (targets (Name x))
+      (value
+       (Call
+        (func (Attribute (Name _tmp_6) __next__))
+        (args)
+        (keywords)
+        (starargs #f)
+        (kwargs #f)))))
+    (handlers
+     (except
+      (Name StopIteration)
+      _tmp_7
+      (Assign (targets (Name _tmp_6)) (value (NameConstant False)))
+      (Continue)))
+    (orelse)
+    (finalbody))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name x))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (orelse)))

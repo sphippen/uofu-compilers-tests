@@ -1,0 +1,8 @@
+(Module
+ (Expr
+  (Call
+   (func (Name print))
+   (args (IfExp (NameConstant True) (Num 1) (Num 2)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

@@ -1,0 +1,85 @@
+(Module
+ (FunctionDef
+  (name _tmp_10)
+  (args
+   (Arguments
+    (args _tmp_11)
+    (arg-types #f)
+    (vararg _tmp_12)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_13)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Pass)
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "AExn")
+      (BinOp (Tuple (Name _tmp_11)) Add (Name _tmp_12))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_13)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_10) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_10) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name AExn))
+  (value
+   (Call
+    (func (Name _tmp_10))
+    (args (Name BaseException))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (FunctionDef
+  (name aexn)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Return (Name AExn)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name aexn) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name aexn) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name aexn) __annotations__))
+  (value (Dict (keys) (values))))
+ (Try
+  (body
+   (Raise
+    (Call (func (Name AExn)) (args) (keywords) (starargs #f) (kwargs #f))))
+  (handlers
+   (except
+    (Call (func (Name aexn)) (args) (keywords) (starargs #f) (kwargs #f))
+    a
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "excepted"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))

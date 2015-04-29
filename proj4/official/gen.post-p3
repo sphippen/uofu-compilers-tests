@@ -1,0 +1,54 @@
+(Module
+ (Assign
+  (targets (Name g))
+  (value
+   (GeneratorExp
+    (Name x)
+    (for
+     (Name x)
+     in
+     (List (Num 1) (Num 2) (Num 3) (Num 4) (Num 5) (Num 6))
+     if))))
+ (Assign
+  (targets (Name _tmp_4))
+  (value
+   (Call
+    (func (Name iter))
+    (args (Name g))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (While
+  (test
+   (Compare
+    (left (Name _tmp_4))
+    (ops IsNot)
+    (comparators (NameConstant False))))
+  (body
+   (Try
+    (body
+     (Assign
+      (targets (Name a))
+      (value
+       (Call
+        (func (Attribute (Name _tmp_4) __next__))
+        (args)
+        (keywords)
+        (starargs #f)
+        (kwargs #f)))))
+    (handlers
+     (except
+      (Name StopIteration)
+      _tmp_5
+      (Assign (targets (Name _tmp_4)) (value (NameConstant False)))
+      (Continue)))
+    (orelse)
+    (finalbody))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name a))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (orelse)))

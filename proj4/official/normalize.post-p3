@@ -1,0 +1,88 @@
+(Module
+ (FunctionDef
+  (name f)
+  (args
+   (Arguments
+    (args x y)
+    (arg-types #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f)))
+  (body (Local) (Return (BinOp (Name x) Add (Name y))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name f) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name f) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name g)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Return (Num 1)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name g) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name g) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name g) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name h)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body (Local) (Return (Num 2)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name h) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name h) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name h) __annotations__))
+  (value (Dict (keys) (values))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name f))
+     (args
+      (Call (func (Name g)) (args) (keywords) (starargs #f) (kwargs #f))
+      (Call (func (Name h)) (args) (keywords) (starargs #f) (kwargs #f)))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))

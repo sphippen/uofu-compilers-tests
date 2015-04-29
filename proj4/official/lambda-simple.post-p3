@@ -1,0 +1,28 @@
+(Module
+ (Assign
+  (targets (Name f))
+  (value
+   (Lambda
+    (Arguments
+     (args x y)
+     (arg-types #f #f)
+     (vararg #f)
+     (kwonlyargs)
+     (kwonlyarg-types)
+     (kw_defaults)
+     (kwarg #f)
+     (defaults #f #f))
+    (BinOp (Name x) Add (Name y)))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name f))
+     (args (Num 10) (Num 20))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
