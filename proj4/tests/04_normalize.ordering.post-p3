@@ -1,0 +1,361 @@
+(Module
+ (FunctionDef
+  (name _tmp_43)
+  (args
+   (Arguments
+    (args _tmp_44)
+    (arg-types #f)
+    (vararg _tmp_45)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_46)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Pass)
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "empty")
+      (BinOp (Tuple (Name _tmp_44)) Add (Name _tmp_45))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_46)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_43) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_43) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name empty))
+  (value
+   (Call (func (Name _tmp_43)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (FunctionDef
+  (name _tmp_47)
+  (args
+   (Arguments
+    (args _tmp_48)
+    (arg-types #f)
+    (vararg _tmp_49)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_50)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local __init__ foo_get foo_set foo)
+   (FunctionDef
+    (name __init__)
+    (args
+     (Arguments
+      (args self foo)
+      (arg-types #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f)))
+    (body
+     (Local)
+     (Assign (targets (Attribute (Name self) order)) (value (Num 0)))
+     (Assign (targets (Attribute (Name self) _foo)) (value (Name foo))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name __init__) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name __init__) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "__init__"))))
+    (value (Name __init__)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "__init__")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name foo_get)
+    (args
+     (Arguments
+      (args self)
+      (arg-types #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f)))
+    (body
+     (Local)
+     (AugAssign (Attribute (Name self) order) Add (Num 1))
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "From tester foo get:") (Attribute (Name self) order))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (Return (Attribute (Name self) _foo)))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name foo_get) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name foo_get) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "foo_get"))))
+    (value (Name foo_get)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "foo_get")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (FunctionDef
+    (name foo_set)
+    (args
+     (Arguments
+      (args self x)
+      (arg-types #f #f)
+      (vararg #f)
+      (kwonlyargs)
+      (kwonlyarg-types)
+      (kw_defaults)
+      (kwarg #f)
+      (defaults #f #f)))
+    (body
+     (Local)
+     (AugAssign (Attribute (Name self) order) Add (Num 1))
+     (Expr
+      (Call
+       (func (Name print))
+       (args (Str "From tester foo set:") (Attribute (Name self) order))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (Assign (targets (Attribute (Name self) _foo)) (value (Name x))))
+    (decorator_list)
+    (returns #f))
+   (Assign
+    (targets (Attribute (Name foo_set) __defaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Attribute (Name foo_set) __kwdefaults__))
+    (value (NameConstant None)))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "foo_set"))))
+    (value (Name foo_set)))
+   (Assign
+    (targets
+     (Attribute
+      (Subscript (Name __dict__) (Index (Str "foo_set")))
+      __annotations__))
+    (value (Dict (keys) (values))))
+   (Assign
+    (targets (Subscript (Name __dict__) (Index (Str "foo"))))
+    (value
+     (Call
+      (func (Name property))
+      (args
+       (Subscript (Name __dict__) (Index (Str "foo_get")))
+       (Subscript (Name __dict__) (Index (Str "foo_set"))))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "tester")
+      (BinOp (Tuple (Name _tmp_48)) Add (Name _tmp_49))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_50)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_47) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_47) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name tester))
+  (value
+   (Call (func (Name _tmp_47)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (FunctionDef
+  (name foo)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "From foo"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Num 0)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name foo) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name foo) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name foo) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name bar)
+  (args
+   (Arguments
+    (args)
+    (arg-types)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "From bar"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Str "B")))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name bar) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name bar) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name bar) __annotations__))
+  (value (Dict (keys) (values))))
+ (FunctionDef
+  (name print_id)
+  (args
+   (Arguments
+    (args printable val)
+    (arg-types #f #f)
+    (vararg #f)
+    (kwonlyargs)
+    (kwonlyarg-types)
+    (kw_defaults)
+    (kwarg #f)
+    (defaults #f #f)))
+  (body
+   (Local)
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Name printable))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Return (Name val)))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name print_id) __defaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name print_id) __kwdefaults__))
+  (value (NameConstant None)))
+ (Assign
+  (targets (Attribute (Name print_id) __annotations__))
+  (value (Dict (keys) (values))))
+ (Assign (targets (Name x)) (value (List (Str "A"))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name x))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets
+   (Subscript
+    (Name x)
+    (Index
+     (Call (func (Name foo)) (args) (keywords) (starargs #f) (kwargs #f)))))
+  (value (Call (func (Name bar)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name x))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets (Name a))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Name a) b))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Attribute (Name a) b) t))
+  (value
+   (Call
+    (func (Name tester))
+    (args (Str "A2"))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Attribute (Attribute (Attribute (Name a) b) t) _foo))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Assign
+  (targets (Attribute (Attribute (Attribute (Name a) b) t) foo))
+  (value
+   (Call
+    (func (Name print_id))
+    (args (Str "Setting B2") (Str "B2"))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Attribute (Attribute (Attribute (Name a) b) t) _foo))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
