@@ -1,0 +1,102 @@
+(Module
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (ListComp
+     (Name a)
+     (for
+      (Name a)
+      in
+      (Call
+       (func (Name range))
+       (args (Num 10))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))
+      if
+      (Compare (left (Name a)) (ops Gt) (comparators (Num 3))))))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (SetComp
+     (Name a)
+     (for
+      (Name a)
+      in
+      (Call
+       (func (Name range))
+       (args (Num 10))
+       (keywords)
+       (starargs #f)
+       (kwargs #f))
+      if
+      (BinOp (Name a) Mod (Num 2)))))
+   (keywords)
+   (starargs #f)
+   (kwargs #f)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args
+    (Call
+     (func (Name list))
+     (args
+      (Call
+       (func (Name sorted))
+       (args
+        (Call
+         (func (Name tuple))
+         (args
+          (Call
+           (func
+            (Attribute
+             (DictComp
+              (Name a)
+              (Name b)
+              (for
+               (Name a)
+               in
+               (Call
+                (func (Name range))
+                (args (Num 10))
+                (keywords)
+                (starargs #f)
+                (kwargs #f))
+               if
+               (Compare
+                (left (BinOp (Name a) Mult (Num 2)))
+                (ops Lt)
+                (comparators (Num 15))))
+              (for
+               (Name b)
+               in
+               (Call
+                (func (Name range))
+                (args (Num 3))
+                (keywords)
+                (starargs #f)
+                (kwargs #f))
+               if
+               (BinOp (Name b) Mod (Num 2))))
+             items))
+           (args)
+           (keywords)
+           (starargs #f)
+           (kwargs #f)))
+         (keywords)
+         (starargs #f)
+         (kwargs #f)))
+       (keywords)
+       (starargs #f)
+       (kwargs #f)))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (keywords)
+   (starargs #f)
+   (kwargs #f))))
