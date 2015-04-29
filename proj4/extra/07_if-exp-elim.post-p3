@@ -25,4 +25,13 @@
    (args (Name b))
    (keywords)
    (starargs #f)
+   (kwargs #f)))
+ (Assign (targets (Name v)) (value (Num 100)))
+ (AugAssign (Name v) Add (IfExp (NameConstant True) (Num 1) (Num 1000)))
+ (Expr
+  (Call
+   (func (Name print))
+   (args (Name v))
+   (keywords)
+   (starargs #f)
    (kwargs #f))))
