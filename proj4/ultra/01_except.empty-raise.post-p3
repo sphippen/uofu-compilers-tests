@@ -1,0 +1,163 @@
+(Module
+ (FunctionDef
+  (name _tmp_18)
+  (args
+   (Arguments
+    (args _tmp_19)
+    (arg-types #f)
+    (vararg _tmp_20)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_21)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Expr (Str ""))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "eA")
+      (BinOp (Tuple (Name _tmp_19)) Add (Name _tmp_20))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_21)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_18) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_18) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name eA))
+  (value
+   (Call
+    (func (Name _tmp_18))
+    (args (Name BaseException))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (FunctionDef
+  (name _tmp_22)
+  (args
+   (Arguments
+    (args _tmp_23)
+    (arg-types #f)
+    (vararg _tmp_24)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_25)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Expr (Str ""))
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "eB")
+      (BinOp (Tuple (Name _tmp_23)) Add (Name _tmp_24))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_25)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_22) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_22) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name eB))
+  (value
+   (Call
+    (func (Name _tmp_22))
+    (args (Name BaseException))
+    (keywords)
+    (starargs #f)
+    (kwargs #f))))
+ (Try
+  (body
+   (Try
+    (body
+     (Raise
+      (Call (func (Name eA)) (args) (keywords) (starargs #f) (kwargs #f))))
+    (handlers
+     (except
+      (Name BaseException)
+      e
+      (FunctionDef
+       (name baz)
+       (args
+        (Arguments
+         (args)
+         (arg-types)
+         (vararg #f)
+         (kwonlyargs)
+         (kwonlyarg-types)
+         (kw_defaults)
+         (kwarg #f)
+         (defaults)))
+       (body (Local) (Raise))
+       (decorator_list)
+       (returns #f))
+      (Assign
+       (targets (Attribute (Name baz) __defaults__))
+       (value (NameConstant None)))
+      (Assign
+       (targets (Attribute (Name baz) __kwdefaults__))
+       (value (NameConstant None)))
+      (Assign
+       (targets (Attribute (Name baz) __annotations__))
+       (value (Dict (keys) (values))))
+      (Try
+       (body
+        (Raise
+         (Call (func (Name eB)) (args) (keywords) (starargs #f) (kwargs #f))))
+       (handlers
+        (except
+         (Name BaseException)
+         e2
+         (Expr
+          (Call
+           (func (Name baz))
+           (args)
+           (keywords)
+           (starargs #f)
+           (kwargs #f)))))
+       (orelse)
+       (finalbody))))
+    (orelse)
+    (finalbody)))
+  (handlers
+   (except
+    (Name eA)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Outer caught eA"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f))))
+   (except
+    (Name eB)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Outer caught eB"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))
