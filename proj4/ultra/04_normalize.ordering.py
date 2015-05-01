@@ -19,21 +19,13 @@ class tester:
 
     foo = property(foo_get, foo_set)
 
-def foo():
-    print("From foo")
-    return 0
-
-def bar():
-    print("From bar")
-    return "B"
-
 def print_id(printable, val):
     print(printable)
     return val
 
 x = ["A"]
 print(x)
-x[foo()] = bar()
+x[print_id("A1 LHS", 0)] = print_id("A1 RHS", "B")
 print(x)
 
 a = empty()
@@ -42,3 +34,10 @@ a.b.t = tester("A2")
 print(a.b.t._foo)
 a.b.t.foo = print_id("Setting B2", "B2")
 print(a.b.t._foo)
+
+t=[55]
+def quux():
+    return t
+print("A3", t)
+print_id("Getting t", quux())[print_id("Setting t LHS", 0)] += print_id("Setting t RHS + 1", 10)
+print("B3", t)
