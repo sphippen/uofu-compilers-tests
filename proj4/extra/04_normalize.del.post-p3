@@ -1,0 +1,103 @@
+(Module
+ (Assign (targets (Name a)) (value (List (Num 1) (Num 2) (Num 3))))
+ (Delete (Subscript (Name a) (Index (BinOp (Num 1) Add (Num 1)))))
+ (FunctionDef
+  (name _tmp_18)
+  (args
+   (Arguments
+    (args _tmp_19)
+    (arg-types #f)
+    (vararg _tmp_20)
+    (kwonlyargs metaclass)
+    (kwonlyarg-types #f)
+    (kw_defaults #f)
+    (kwarg _tmp_21)
+    (defaults #f)))
+  (body
+   (Assign (targets (Name __dict__)) (value (Dict (keys) (values))))
+   (Local)
+   (Pass)
+   (Return
+    (Call
+     (func (Name metaclass))
+     (args
+      (Str "empty")
+      (BinOp (Tuple (Name _tmp_19)) Add (Name _tmp_20))
+      (Name __dict__))
+     (keywords)
+     (starargs #f)
+     (kwargs (Name _tmp_21)))))
+  (decorator_list)
+  (returns #f))
+ (Assign
+  (targets (Attribute (Name _tmp_18) __defaults__))
+  (value (Tuple (Name object))))
+ (Assign
+  (targets (Attribute (Name _tmp_18) __kwdefaults__))
+  (value (Dict (keys (Str "metaclass")) (values (Name type)))))
+ (Assign
+  (targets (Name empty))
+  (value
+   (Call (func (Name _tmp_18)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Try
+  (body
+   (Assign (targets (Name x)) (value (Subscript (Name a) (Index (Num 2)))))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "Failed 1"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    (Name IndexError)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Passed 1"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody))
+ (Assign
+  (targets (Name b))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign
+  (targets (Attribute (Name b) c))
+  (value
+   (Call (func (Name empty)) (args) (keywords) (starargs #f) (kwargs #f))))
+ (Assign (targets (Attribute (Attribute (Name b) c) e)) (value (Num 1)))
+ (Delete (Attribute (Attribute (Name b) c) e))
+ (Try
+  (body
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Attribute (Attribute (Name b) c) e))
+     (keywords)
+     (starargs #f)
+     (kwargs #f)))
+   (Expr
+    (Call
+     (func (Name print))
+     (args (Str "Failed 2"))
+     (keywords)
+     (starargs #f)
+     (kwargs #f))))
+  (handlers
+   (except
+    (Name AttributeError)
+    #f
+    (Expr
+     (Call
+      (func (Name print))
+      (args (Str "Passed 2"))
+      (keywords)
+      (starargs #f)
+      (kwargs #f)))))
+  (orelse)
+  (finalbody)))
